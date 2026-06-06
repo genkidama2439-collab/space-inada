@@ -114,8 +114,8 @@ export const shootingVideo: VideoAsset = {
 
 /* ───────────── About（代表・活動） ───────────── */
 export const aboutPortrait: ImageAsset = {
-  // src: "/images/about/inada-keiichi.jpg", // 推奨: 縦長 900×1200
-  alt: "代表・稲田圭市のポートレート",
+  src: "/images/about/inada-keiichi.jpg",
+  alt: "宮古島の星空フォトグラファー・代表 稲田圭市のポートレート",
 };
 export const aboutActivity: ImageAsset = {
   // src: "/images/about/activity.jpg",
