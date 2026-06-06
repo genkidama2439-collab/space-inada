@@ -16,7 +16,7 @@ import { getPosts } from "@/data/posts";
 import { getTestimonials, getAverageRating } from "@/data/testimonials";
 
 export const metadata: Metadata = buildMetadata({
-  title: { absolute: `${siteConfig.name}｜宮古島の星空フォト・記念日撮影` },
+  title: { absolute: `宮古島の星空フォト・記念日撮影｜${siteConfig.name}` },
   description: siteConfig.description,
   path: "/",
 });
