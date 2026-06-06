@@ -6,7 +6,8 @@ import { PlanCard } from "@/components/sections/PlanCard";
 import { TestimonialCard } from "@/components/sections/TestimonialCard";
 import { CtaBooking } from "@/components/sections/CtaBooking";
 import { Hero } from "@/components/sections/Hero";
-import { ImageSlot } from "@/components/media/ImageSlot";
+import { SectionHeading } from "@/components/sections/SectionHeading";
+import { GalleryMasonry } from "@/components/sections/GalleryMasonry";
 import { VideoPlayer } from "@/components/media/VideoPlayer";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { videoJsonLd } from "@/lib/jsonld";
@@ -151,12 +152,7 @@ export default function Home() {
 
       {/* プラン紹介 */}
       <Section className="cosmic-band">
-        <div className="flex items-end justify-between gap-4">
-          <h2 className="cosmic-title text-2xl font-bold sm:text-3xl">撮影プラン</h2>
-          <Link href="/plans" className="cosmic-link text-sm">
-            すべて見る →
-          </Link>
-        </div>
+        <SectionHeading title="撮影プラン" href="/plans" />
         <div className="-mx-5 mt-10 flex snap-x snap-mandatory gap-3 overflow-x-auto px-5 pb-4 [-webkit-overflow-scrolling:touch] [scrollbar-width:none] sm:mx-0 sm:grid sm:grid-cols-2 sm:gap-5 sm:overflow-visible sm:px-0 sm:pb-0 lg:grid-cols-3 [&::-webkit-scrollbar]:hidden">
           {plans.map((plan, i) => (
             <div
@@ -171,34 +167,17 @@ export default function Home() {
 
       {/* ギャラリー抜粋 */}
       <Section>
-        <div className="reveal-up flex items-end justify-between gap-4">
-          <h2 className="cosmic-title text-2xl font-bold sm:text-3xl">撮影ギャラリー</h2>
-          <Link href="/gallery" className="cosmic-link text-sm">
-            すべて見る →
-          </Link>
-        </div>
-        <div className="mt-10 columns-2 gap-3 sm:columns-3 sm:gap-4">
-          {galleryImages.slice(0, 6).map((img, i) => (
-            <figure
-              key={i}
-              className={`cosmic-panel reveal-up relative mb-3 w-full break-inside-avoid overflow-hidden rounded-lg sm:mb-4 ${
-                img.orientation === "portrait" ? "aspect-[2/3]" : "aspect-[3/2]"
-              } ${i % 3 === 1 ? "delay-100" : i % 3 === 2 ? "delay-200" : ""}`}
-            >
-              <ImageSlot asset={img} sizes="(max-width: 640px) 50vw, 33vw" />
-            </figure>
-          ))}
-        </div>
+        <SectionHeading title="撮影ギャラリー" href="/gallery" reveal />
+        <GalleryMasonry
+          images={galleryImages.slice(0, 6)}
+          className="mt-10"
+          reveal
+        />
       </Section>
 
       {/* コラム */}
       <Section>
-        <div className="reveal-up flex items-end justify-between gap-4">
-          <h2 className="cosmic-title text-2xl font-bold sm:text-3xl">星空フォトコラム</h2>
-          <Link href="/blog" className="cosmic-link text-sm">
-            すべて見る →
-          </Link>
-        </div>
+        <SectionHeading title="星空フォトコラム" href="/blog" reveal />
         <div className="mt-10 grid gap-5 sm:grid-cols-3">
           {posts.map((post, i) => (
             <Link
@@ -219,17 +198,12 @@ export default function Home() {
 
       {/* お客様の声 */}
       <Section className="cosmic-band">
-        <div className="reveal-up flex items-end justify-between gap-4">
-          <div>
-            <h2 className="cosmic-title text-2xl font-bold sm:text-3xl">お客様の声</h2>
-            <p className="mt-2 text-sm text-amber-200">
-              ★ {average} / 5（{getTestimonials().length}件）
-            </p>
-          </div>
-          <Link href="/voice" className="cosmic-link text-sm">
-            すべて見る →
-          </Link>
-        </div>
+        <SectionHeading
+          title="お客様の声"
+          href="/voice"
+          reveal
+          subtitle={`★ ${average} / 5（${getTestimonials().length}件）`}
+        />
         <div className="mt-10 grid gap-5 sm:grid-cols-3">
           {testimonials.map((t, i) => (
             <div
