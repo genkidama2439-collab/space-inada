@@ -25,7 +25,8 @@ const notoSansJp = Noto_Sans_JP({
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
   title: {
-    default: `${siteConfig.name}｜宮古島の星空フォト・記念日撮影`,
+    // SEO: 検索される語（宮古島の星空フォト…）を先頭に、ブランド名は後ろに置く
+    default: `宮古島の星空フォト・記念日撮影｜${siteConfig.name}`,
     template: `%s｜${siteConfig.shortName}`,
   },
   description: siteConfig.description,
@@ -36,7 +37,7 @@ export const metadata: Metadata = {
     siteName: siteConfig.name,
     locale: siteConfig.locale,
     url: siteConfig.url,
-    // og:image はファイル規約 app/opengraph-image.tsx が全ページに自動付与
+    // og:image はファイル規約 app/opengraph-image.jpg が全ページに自動付与
   },
   twitter: { card: siteConfig.twitter.card },
   appleWebApp: {

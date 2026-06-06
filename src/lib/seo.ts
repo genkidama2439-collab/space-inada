@@ -15,9 +15,9 @@ const SITE_URL = (
 ).replace(/\/$/, "");
 
 export const siteConfig = {
-  name: "星空フォト宮古島",
+  name: "スペースイナダ",
   /** title.template に使う短い屋号 */
-  shortName: "星空フォト宮古島",
+  shortName: "スペースイナダ",
   url: SITE_URL,
   description:
     "宮古島の満天の星空・天の川を背景に、カップル・記念日・家族・プロポーズの一枚を撮影。星空フォトのプロが、宮古島でしか撮れない夜の思い出を残します。",
@@ -53,8 +53,9 @@ export const siteConfig = {
   },
   /** SNS（sameAs 用）。確定後に追加 */
   sameAs: [] as string[],
-  /** 既定 OG 画像（app/opengraph-image.tsx で生成） */
-  ogImage: "/opengraph-image",
+  /** 既定 OG 画像（buildMetadata の各ページOG・JSON-LD 用の安定パス）。
+      トップは app/opengraph-image.jpg がファイル規約で自動付与する */
+  ogImage: "/og/og-default.jpg",
   twitter: {
     card: "summary_large_image" as const,
     site: "", // TODO: @アカウント
