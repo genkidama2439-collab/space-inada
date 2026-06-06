@@ -8,6 +8,27 @@ html {
   scroll-behavior: smooth;
 }
 
+/* ───────── 日本語の改行を自然に整える ─────────
+   - auto-phrase: 文節単位で改行（「カップル」等の語中分断を防ぐ。対応外ブラウザは無視＝無害）
+   - line-break: strict: 小書き仮名や約物の前で不自然に折り返さない
+   - 見出しは balance で行幅を均等化、本文は pretty で行末の孤立文字を防ぐ */
+body {
+  word-break: auto-phrase;
+  line-break: strict;
+}
+h1,
+h2,
+h3,
+h4 {
+  text-wrap: balance;
+}
+p,
+li,
+blockquote,
+figcaption {
+  text-wrap: pretty;
+}
+
 body {
   font-family: var(--font-sans), -apple-system, "Hiragino Kaku Gothic ProN",
     "Yu Gothic", Meiryo, sans-serif;
