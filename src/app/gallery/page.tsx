@@ -26,11 +26,14 @@ export default function GalleryPage() {
         プロポーズの瞬間、家族の笑顔——ここでしか残せない一枚をご覧ください。
       </p>
 
-      <div className="mt-12 grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4">
+      {/* 縦・横をそのまま活かすマソンリー（CSS columns）。各写真は元の向きの比率で表示 */}
+      <div className="mt-12 columns-2 gap-3 sm:columns-3 sm:gap-4">
         {galleryImages.map((img, i) => (
           <figure
             key={i}
-            className="cosmic-panel relative aspect-square w-full overflow-hidden rounded-lg"
+            className={`cosmic-panel relative mb-3 w-full break-inside-avoid overflow-hidden rounded-lg sm:mb-4 ${
+              img.orientation === "portrait" ? "aspect-[2/3]" : "aspect-[3/2]"
+            }`}
           >
             <ImageSlot
               asset={img}

@@ -177,11 +177,13 @@ export default function Home() {
             すべて見る →
           </Link>
         </div>
-        <div className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4">
+        <div className="mt-10 columns-2 gap-3 sm:columns-3 sm:gap-4">
           {galleryImages.slice(0, 6).map((img, i) => (
             <figure
               key={i}
-              className={`cosmic-panel reveal-up relative aspect-square w-full overflow-hidden rounded-lg ${i % 3 === 1 ? "delay-100" : i % 3 === 2 ? "delay-200" : ""}`}
+              className={`cosmic-panel reveal-up relative mb-3 w-full break-inside-avoid overflow-hidden rounded-lg sm:mb-4 ${
+                img.orientation === "portrait" ? "aspect-[2/3]" : "aspect-[3/2]"
+              } ${i % 3 === 1 ? "delay-100" : i % 3 === 2 ? "delay-200" : ""}`}
             >
               <ImageSlot asset={img} sizes="(max-width: 640px) 50vw, 33vw" />
             </figure>

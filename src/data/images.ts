@@ -16,6 +16,8 @@ export type ImageAsset = {
   src?: string;
   /** alt テキスト（SEO・アクセシビリティ用。実写真未設定でも先に用意しておく） */
   alt: string;
+  /** 写真の向き。ギャラリー（マソンリー）で縦/横をそのまま活かすために使う。未指定は landscape 扱い */
+  orientation?: "portrait" | "landscape";
 };
 
 /* ───────────── トップ ヒーロー ───────────── */
@@ -28,35 +30,36 @@ export const heroImage: ImageAsset = {
 // 各プランに写真を「複数枚」設定できる（配列の順番に表示される）。
 // 写真が用意できたら該当行のコメントを外す（推奨: 1200×900 程度）。
 const PLAN_IMAGE_SRC: Partial<Record<PlanSlug, string[]>> = {
+  // プランのスロットは 4:3 / 16:9 の横長レイアウト。崩れないよう「横写真」のみを使う。
   casual: [
-    "/images/plans/standard-33-couple-grass-facing-milkyway.jpg",
-    "/images/plans/standard-46-couple-lookup-milkyway-center.jpg",
-    "/images/plans/standard-15-couple-grassslope-sitting-milkyway.jpg",
-    "/images/plans/standard-29-couple-handhold-grasshill-stars.jpg",
+    "/images/plans/standard-31-couple-facing-milkyway-silhouette.jpg",
+    "/images/plans/standard-35-couple-seawall-milkyway-diagonal.jpg",
+    "/images/plans/standard-26-couple-pointing-milkyway-arch.jpg",
+    "/images/plans/standard-01-couple-back-to-back-milkyway.jpg",
   ],
   standard: [
     "/images/plans/standard-44-couple-facing-handhold-moon.jpg",
-    "/images/plans/standard-11-couple-seaside-tetrapod-milkyway.jpg",
     "/images/plans/standard-09-couple-handhold-facing-milkyway.jpg",
-    "/images/plans/standard-57-couple-deck-back-milkyway.jpg",
+    "/images/plans/standard-13-couple-deck-milkyway-arch.jpg",
+    "/images/plans/standard-46-couple-lookup-milkyway-center.jpg",
   ],
   family: [
     "/images/plans/family-01-shoulder-ride-milkyway.jpg",
     "/images/plans/family-14-pointing-light-milkyway.jpg",
-    "/images/plans/family-09-three-sisters-white-dress.jpg",
     "/images/plans/family-07-grass-sitting-lookup-milkyway.jpg",
+    "/images/plans/family-04-hilltop-silhouette-milkyway.jpg",
   ],
   creative: [
     "/images/plans/creative-03-illumination-proposal-fairylights.jpg",
-    "/images/plans/creative-01-illumination-fairylights-couple.jpg",
     "/images/plans/creative-05-illumination-couple-foreheads.jpg",
     "/images/plans/creative-06-illumination-light-up-milkyway.jpg",
+    "/images/plans/creative-04-illumination-sparkler-deck.jpg",
   ],
   propose: [
-    "/images/plans/propose-07-milkyway-reflection-embrace.jpg",
     "/images/plans/propose-03-milkyway-kneeling-moonrise.jpg",
-    "/images/plans/propose-01-milkyway-kneeling-silhouette.jpg",
-    "/images/plans/propose-06-milkyway-grassfield-kneeling.jpg",
+    "/images/plans/propose-04-milkyway-kneeling-ridge.jpg",
+    "/images/plans/propose-08-milkyway-grasshill-couple.jpg",
+    "/images/plans/propose-09-milkyway-grasshill-facing.jpg",
   ],
 };
 
@@ -121,14 +124,15 @@ export const aboutActivity: ImageAsset = {
 
 /* ───────────── ギャラリー（作品集 / 画像検索狙い） ───────────── */
 // 写真を追加するときは src を設定（alt は検索キーワードを意識して記述済み）。
+// ギャラリーは縦・横の両方をそのまま活かす（マソンリー表示）。各写真に向きを指定する。
 export const galleryImages: ImageAsset[] = [
-  { src: "/images/gallery/standard-30-milkyway-landscape-nopeople.jpg", alt: "宮古島の天の川と星空フォト" },
-  { src: "/images/plans/propose-07-milkyway-reflection-embrace.jpg", alt: "宮古島でプロポーズ撮影をするカップルの星空フォト" },
-  { src: "/images/plans/family-01-shoulder-ride-milkyway.jpg", alt: "宮古島の星空を背景にした家族写真" },
-  { src: "/images/plans/standard-44-couple-facing-handhold-moon.jpg", alt: "宮古島の記念日カップルフォト" },
-  { src: "/images/gallery/standard-39-man-beach-milkyway-sea.jpg", alt: "宮古島のビーチで撮影した星空ポートレート" },
-  { src: "/images/gallery/standard-49-woman-beach-reach-milkyway.jpg", alt: "宮古島の夜空に広がる満天の星" },
-  { src: "/images/plans/standard-57-couple-deck-back-milkyway.jpg", alt: "宮古島ロケーション撮影の星空ツアーの一枚" },
-  { src: "/images/plans/creative-06-illumination-light-up-milkyway.jpg", alt: "宮古島の星空と光跡を活かしたクリエイティブフォト" },
-  { src: "/images/plans/standard-33-couple-grass-facing-milkyway.jpg", alt: "宮古島でカジュアルプランのカップル星空フォト" },
+  { src: "/images/gallery/standard-30-milkyway-landscape-nopeople.jpg", orientation: "landscape", alt: "宮古島の天の川と星空フォト" },
+  { src: "/images/plans/propose-07-milkyway-reflection-embrace.jpg", orientation: "portrait", alt: "宮古島でプロポーズ撮影をするカップルの星空フォト" },
+  { src: "/images/plans/family-01-shoulder-ride-milkyway.jpg", orientation: "landscape", alt: "宮古島の星空を背景にした家族写真" },
+  { src: "/images/plans/standard-44-couple-facing-handhold-moon.jpg", orientation: "landscape", alt: "宮古島の記念日カップルフォト" },
+  { src: "/images/gallery/standard-39-man-beach-milkyway-sea.jpg", orientation: "portrait", alt: "宮古島のビーチで撮影した星空ポートレート" },
+  { src: "/images/gallery/standard-49-woman-beach-reach-milkyway.jpg", orientation: "portrait", alt: "宮古島の夜空に広がる満天の星" },
+  { src: "/images/plans/standard-57-couple-deck-back-milkyway.jpg", orientation: "portrait", alt: "宮古島ロケーション撮影の星空ツアーの一枚" },
+  { src: "/images/plans/creative-01-illumination-fairylights-couple.jpg", orientation: "portrait", alt: "宮古島の星空とイルミネーションを活かしたクリエイティブフォト" },
+  { src: "/images/plans/standard-33-couple-grass-facing-milkyway.jpg", orientation: "portrait", alt: "宮古島でカジュアルプランのカップル星空フォト" },
 ];
