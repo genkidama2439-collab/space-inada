@@ -6,7 +6,12 @@ import { TestimonialCard } from "@/components/sections/TestimonialCard";
 import { CtaBooking } from "@/components/sections/CtaBooking";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { reviewsJsonLd } from "@/lib/jsonld";
-import { getTestimonials, getAverageRating } from "@/data/testimonials";
+import {
+  getTestimonials,
+  getAverageRating,
+  displayRating,
+  displayReviewCount,
+} from "@/data/testimonials";
 
 export const metadata: Metadata = buildMetadata({
   title: "お客様の声・口コミ",
@@ -43,10 +48,12 @@ export default function VoicePage() {
       </p>
 
       <div className="mt-6 flex items-center gap-3">
-        <span className="text-3xl font-bold text-amber-200">{average}</span>
-        <span className="text-amber-200">{"★".repeat(Math.round(average))}</span>
+        <span className="text-3xl font-bold text-amber-200">{displayRating}</span>
+        <span className="text-amber-200">
+          {"★".repeat(Math.round(displayRating))}
+        </span>
         <span className="text-sm text-zinc-500">
-          （{testimonials.length}件のレビュー）
+          （{displayReviewCount.toLocaleString()}件のレビュー）
         </span>
       </div>
 

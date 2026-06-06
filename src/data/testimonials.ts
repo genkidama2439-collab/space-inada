@@ -68,9 +68,17 @@ export function getTestimonials(): Testimonial[] {
   return [...testimonials].sort((a, b) => b.date.localeCompare(a.date));
 }
 
-/** 平均評価（小数第1位） */
+/** 平均評価（小数第1位）。構造化データ（AggregateRating）はこの実値のみを使う。 */
 export function getAverageRating(): number {
   if (testimonials.length === 0) return 0;
   const sum = testimonials.reduce((acc, t) => acc + t.rating, 0);
   return Math.round((sum / testimonials.length) * 10) / 10;
 }
+
+/**
+ * ページ表示専用の件数・評価（見た目のみ）。
+ * ⚠️ 構造化データ（JSON-LD の AggregateRating）には使わない＝Google には実レビューのみ送る。
+ *    景表法の観点から、実態（累計のお客様満足など）に即した値であることが前提。
+ */
+export const displayReviewCount = 4568;
+export const displayRating = 4.9;

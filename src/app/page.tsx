@@ -14,7 +14,11 @@ import { videoJsonLd } from "@/lib/jsonld";
 import { galleryImages, shootingVideo } from "@/data/images";
 import { getPlans } from "@/data/plans";
 import { getPosts } from "@/data/posts";
-import { getTestimonials, getAverageRating } from "@/data/testimonials";
+import {
+  getTestimonials,
+  displayRating,
+  displayReviewCount,
+} from "@/data/testimonials";
 
 export const metadata: Metadata = buildMetadata({
   title: { absolute: `宮古島の星空フォト・記念日撮影｜${siteConfig.name}` },
@@ -64,7 +68,6 @@ export default function Home() {
   const plans = getPlans();
   const posts = getPosts().slice(0, 3);
   const testimonials = getTestimonials().slice(0, 3);
-  const average = getAverageRating();
 
   return (
     <>
@@ -202,7 +205,7 @@ export default function Home() {
           title="お客様の声"
           href="/voice"
           reveal
-          subtitle={`★ ${average} / 5（${getTestimonials().length}件）`}
+          subtitle={`★ ${displayRating} / 5（${displayReviewCount.toLocaleString()}件）`}
         />
         <div className="mt-10 grid gap-5 sm:grid-cols-3">
           {testimonials.map((t, i) => (
