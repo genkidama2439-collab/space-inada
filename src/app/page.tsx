@@ -205,7 +205,7 @@ export default function Home() {
           title="お客様の声"
           href="/voice"
           reveal
-          subtitle={`★ ${displayRating} / 5（${displayReviewCount.toLocaleString()}件）`}
+          subtitle={`★ ${displayRating} / 5・各サイト累計クチコミ ${displayReviewCount.toLocaleString()}件`}
         />
         <div className="mt-10 grid gap-5 sm:grid-cols-3">
           {testimonials.map((t, i) => (

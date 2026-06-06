@@ -53,9 +53,12 @@ export default function VoicePage() {
           {"★".repeat(Math.round(displayRating))}
         </span>
         <span className="text-sm text-zinc-500">
-          （{displayReviewCount.toLocaleString()}件のレビュー）
+          各サイト累計クチコミ {displayReviewCount.toLocaleString()}件
         </span>
       </div>
+      <p className="mt-2 text-xs text-zinc-600">
+        ※ Google・各予約サイト等に寄せられたクチコミの累計です。以下は代表的な事例をご紹介しています。
+      </p>
 
       <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {testimonials.map((t) => (
