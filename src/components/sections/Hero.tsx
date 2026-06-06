@@ -1,7 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
-
-const HERO_IMAGE = "/images/miyakojima-starry-sky-hero.png";
+// 静的インポートすると next/image が blurDataURL を自動生成でき、
+// 読み込み中はブラー → 実画像へ滑らかにフェードする（初回表示のちらつき防止）。
+import heroImage from "../../../public/images/hero/hero.jpg";
 
 /**
  * トップページのファーストビュー。
@@ -21,12 +22,14 @@ export function Hero() {
         className="absolute inset-0 opacity-70 [background-image:radial-gradient(circle,rgba(255,255,255,0.7)_0_1px,transparent_1.8px),radial-gradient(circle,rgba(165,243,252,0.4)_0_1px,transparent_1.6px)] [background-position:24px_44px,120px_150px] [background-size:200px_200px,300px_300px]"
       />
 
-      {/* メインの星空写真（LCP対象。next/image で最適化＋object-cover） */}
+      {/* メインの星空写真（LCP対象。next/image で最適化＋object-cover）。
+          placeholder=blur で初回ロード時のちらつき（パッと出る現象）を防ぐ */}
       <Image
-        src={HERO_IMAGE}
+        src={heroImage}
         alt="宮古島の満天の星空と天の川｜スペースイナダの星空フォト"
         fill
         priority
+        placeholder="blur"
         sizes="100vw"
         className="object-cover"
       />
