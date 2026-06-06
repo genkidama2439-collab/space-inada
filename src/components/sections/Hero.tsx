@@ -2,7 +2,9 @@ import Image from "next/image";
 import Link from "next/link";
 // 静的インポートすると next/image が blurDataURL を自動生成でき、
 // 読み込み中はブラー → 実画像へ滑らかにフェードする（初回表示のちらつき防止）。
-import heroImage from "../../../public/images/hero/hero.jpg";
+// PC は横長、スマホは縦長のスペースシャトル画像を出し分ける。
+import heroDesktop from "../../../public/images/hero/hero-shuttle-desktop.jpg";
+import heroMobile from "../../../public/images/hero/hero-shuttle-mobile.jpg";
 
 /**
  * トップページのファーストビュー。
@@ -22,16 +24,26 @@ export function Hero() {
         className="absolute inset-0 opacity-70 [background-image:radial-gradient(circle,rgba(255,255,255,0.7)_0_1px,transparent_1.8px),radial-gradient(circle,rgba(165,243,252,0.4)_0_1px,transparent_1.6px)] [background-position:24px_44px,120px_150px] [background-size:200px_200px,300px_300px]"
       />
 
-      {/* メインの星空写真（LCP対象。next/image で最適化＋object-cover）。
-          placeholder=blur で初回ロード時のちらつき（パッと出る現象）を防ぐ */}
+      {/* メインのスペースシャトル画像（LCP対象。next/image で最適化＋object-cover）。
+          placeholder=blur で初回ロード時のちらつき（パッと出る現象）を防ぐ。
+          スマホ＝縦画像、PC（md以上）＝横画像を出し分ける。 */}
       <Image
-        src={heroImage}
-        alt="宮古島の満天の星空と天の川｜スペースイナダの星空フォト"
+        src={heroMobile}
+        alt="星空へ打ち上がるスペースシャトル｜スペースイナダ"
         fill
         priority
         placeholder="blur"
         sizes="100vw"
-        className="object-cover"
+        className="object-cover md:hidden"
+      />
+      <Image
+        src={heroDesktop}
+        alt="星空へ打ち上がるスペースシャトル｜スペースイナダ"
+        fill
+        priority
+        placeholder="blur"
+        sizes="100vw"
+        className="hidden object-cover md:block"
       />
 
       {/* 文字を読みやすくする暗めのグラデーション（上＝ヘッダー、下＝コピー/次セクション接続） */}
