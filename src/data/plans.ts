@@ -20,10 +20,12 @@ export type Plan = {
   tagline: string;
   /** 誰向けか（狙うKWと一致させる） */
   forWhom: string[];
-  /** 表示する代表価格。未設定なら「詳細はお問い合わせ」 */
+  /** 表示する代表価格。未設定なら「詳細はお問い合わせ」。/人 なら大人1名、/組 なら1組の料金。 */
   priceFrom?: number;
   /** 価格の単位表記（例: "/人", "/組"） */
   priceUnit?: string;
+  /** 子供（0〜15才）料金。"/人" プランのみ。予約フォームの合計計算に使う。 */
+  childPrice?: number;
   /** 料金内訳の各行 */
   pricingDetail: string[];
   /** 撮影時間（分）。未設定なら「応相談」 */
@@ -49,6 +51,7 @@ export const plans: Plan[] = [
     forWhom: ["カップル", "友人同士", "はじめての方"],
     priceFrom: 7000,
     priceUnit: "/人",
+    childPrice: 3000,
     pricingDetail: ["大人 ¥7,000 / 人", "子供 ¥3,000 / 人（0〜15才）"],
     durationMin: 15,
     deliveryCount: "約8枚",
@@ -73,6 +76,7 @@ export const plans: Plan[] = [
     forWhom: ["記念日", "家族", "カップル"],
     priceFrom: 9000,
     priceUnit: "/人",
+    childPrice: 5000,
     pricingDetail: ["大人 ¥9,000 / 人", "子供 ¥5,000 / 人（0〜15才）"],
     durationMin: 30,
     deliveryCount: "データ全て",
@@ -205,6 +209,19 @@ export function getPriceRange(): { min: number; max: number } | null {
 
 export function formatPrice(yen: number): string {
   return `¥${yen.toLocaleString("ja-JP")}`;
+}
+
+/** 料金体系の種別。perPerson=1人ごと / perGroup=1組固定 / quote=要見積り */
+export type PlanPriceKind = "perPerson" | "perGroup" | "quote";
+
+export function planPriceKind(plan: Plan): PlanPriceKind {
+  if (typeof plan.priceFrom !== "number") return "quote";
+  return plan.priceUnit === "/組" ? "perGroup" : "perPerson";
+}
+
+/** 送迎オプションの料金（予約フォームの合計計算に使う）。 */
+export function getPickupPrice(): number {
+  return planOptions.find((o) => o.name === "送迎")?.priceFrom ?? 5000;
 }
 
 /** カード等で使う価格の表示文字列（未設定なら「詳細はお問い合わせ」）。 */

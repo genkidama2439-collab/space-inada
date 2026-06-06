@@ -2,18 +2,29 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { trackEvent } from "@/lib/analytics";
+import { formatPrice, type PlanPriceKind } from "@/data/plans";
 
 /** 公式LINE（予約相談） */
 const LINE_URL = "https://lin.ee/5z6HX4S";
 
 /** 入力内容の自動保存キー（離脱しても復元する） */
-const STORAGE_KEY = "booking-form-v1";
+const STORAGE_KEY = "booking-form-v2";
 
-type PlanOption = { slug: string; name: string };
+type PlanOption = {
+  slug: string;
+  name: string;
+  kind: PlanPriceKind;
+  /** /人 なら大人1名の料金、/組 なら1組の料金。要見積りは null */
+  basePrice: number | null;
+  /** 子供（0〜15才）料金。/人 プランのみ */
+  childPrice: number | null;
+};
 
 type Props = {
   planOptions: PlanOption[];
   defaultPlan?: string;
+  /** 送迎オプションの料金 */
+  pickupPrice: number;
 };
 
 function formatDate(v: string): string {
@@ -30,10 +41,7 @@ function formatInstagram(v: string): string {
 
 /**
  * LINE送信用テキストを組み立てる。
- *
- * ⚠️ ヘッダーと項目①〜④の文言は、元テンプレートの欠落部分を様式に合わせて再構成したもの。
- *    ⑤〜⑧および末尾の定型文（集合場所 / 夜ご飯）は元テンプレート通り。
- *    文言調整はこの関数内のみで完結する。
+ * 人数・オプション・お会計（概算）・お支払い方法（現地現金のみ）まで含める。
  */
 function buildMessage(v: {
   date: string;
@@ -44,10 +52,13 @@ function buildMessage(v: {
   phone: string;
   hotel: string;
   stay: string;
+  pickup: boolean;
+  location: boolean;
   instagram: string;
   story: boolean;
+  totalText: string;
 }): string {
-  return `【星空フォト宮古島 ご予約・お問い合わせ】
+  return `【スペースイナダ ご予約・お問い合わせ】
 
 ① 撮影希望日：
 ${formatDate(v.date)}
@@ -60,7 +71,7 @@ ${v.name}
 
 ④ 人数：
 大人：${v.adults}人
-3歳以下：${v.children}人
+子ども（0〜15才）：${v.children}人
 
 ⑤ 携帯番号：
 ${v.phone}
@@ -71,10 +82,19 @@ ${v.hotel}
 ⑦ 滞在期間：
 ${v.stay}
 
-⑧ Instagram（任意）：
+⑧ オプション：
+送迎：${v.pickup ? "希望する（+¥5,000）" : "なし"}
+場所指定：${v.location ? "希望する（応相談）" : "なし"}
+
+⑨ Instagram（任意）：
 ${formatInstagram(v.instagram)}
 ストーリータグ付け：${v.story ? "OK" : "未回答"}
 
+━━━━━━━━━━━━━━━━
+💴 お会計（概算）：
+${v.totalText}
+※お支払いは「現地にて現金決済のみ」となります。
+（最終金額はLINEにてご確定します）
 ━━━━━━━━━━━━━━━━
 ⚠️【集合場所について】
 最高の星空スポットで撮影するため、集合場所は当日の風や星の位置に合わせてこちらで調整し、"当日"にLINEにてご連絡します。楽しみにお待ちください！
@@ -99,7 +119,7 @@ function RequiredBadge() {
   );
 }
 
-export function BookingForm({ planOptions, defaultPlan }: Props) {
+export function BookingForm({ planOptions, defaultPlan, pickupPrice }: Props) {
   const defaultPlanName =
     planOptions.find((p) => p.slug === defaultPlan)?.name ?? "";
 
@@ -111,6 +131,8 @@ export function BookingForm({ planOptions, defaultPlan }: Props) {
   const [phone, setPhone] = useState("");
   const [hotel, setHotel] = useState("");
   const [stay, setStay] = useState("");
+  const [pickup, setPickup] = useState(false);
+  const [location, setLocation] = useState(false);
   const [instagram, setInstagram] = useState("");
   const [story, setStory] = useState(false);
   const [status, setStatus] = useState<"idle" | "copied" | "error">("idle");
@@ -118,6 +140,52 @@ export function BookingForm({ planOptions, defaultPlan }: Props) {
   const [actedMessage, setActedMessage] = useState("");
 
   const previewRef = useRef<HTMLTextAreaElement>(null);
+
+  // ───── お会計（概算）の計算 ─────
+  const selectedPlan = planOptions.find((p) => p.name === plan);
+  const adultsNum = Math.max(0, parseInt(adults, 10) || 0);
+  const childrenNum = Math.max(0, parseInt(children, 10) || 0);
+  const pickupAmount = pickup ? pickupPrice : 0;
+
+  const total: number | null = useMemo(() => {
+    if (!selectedPlan) return null;
+    if (selectedPlan.kind === "perPerson") {
+      return (
+        adultsNum * (selectedPlan.basePrice ?? 0) +
+        childrenNum * (selectedPlan.childPrice ?? 0) +
+        pickupAmount
+      );
+    }
+    if (selectedPlan.kind === "perGroup") {
+      return (selectedPlan.basePrice ?? 0) + pickupAmount;
+    }
+    return null; // quote（プロポーズ等）
+  }, [selectedPlan, adultsNum, childrenNum, pickupAmount]);
+
+  // 表示・送信用の合計テキスト
+  const totalText = useMemo(() => {
+    if (!plan) return "プランを選択すると概算が表示されます";
+    if (total == null) return "別途お見積り（LINEでご相談ください）";
+    return `${formatPrice(total)}${location ? "　＋ 場所指定（応相談）" : ""}`;
+  }, [plan, total, location]);
+
+  // 内訳行（UI表示用）
+  const breakdown = useMemo(() => {
+    if (!selectedPlan || total == null) return [] as string[];
+    const lines: string[] = [];
+    if (selectedPlan.kind === "perPerson") {
+      lines.push(`大人 ${adultsNum}名 × ${formatPrice(selectedPlan.basePrice ?? 0)}`);
+      if (childrenNum > 0) {
+        lines.push(
+          `子ども ${childrenNum}名 × ${formatPrice(selectedPlan.childPrice ?? 0)}`,
+        );
+      }
+    } else if (selectedPlan.kind === "perGroup") {
+      lines.push(`${selectedPlan.name} 1組 ${formatPrice(selectedPlan.basePrice ?? 0)}`);
+    }
+    if (pickup) lines.push(`送迎 +${formatPrice(pickupPrice)}`);
+    return lines;
+  }, [selectedPlan, total, adultsNum, childrenNum, pickup, pickupPrice]);
 
   const message = useMemo(
     () =>
@@ -130,10 +198,13 @@ export function BookingForm({ planOptions, defaultPlan }: Props) {
         phone,
         hotel,
         stay,
+        pickup,
+        location,
         instagram,
         story,
+        totalText,
       }),
-    [date, plan, name, adults, children, phone, hotel, stay, instagram, story],
+    [date, plan, name, adults, children, phone, hotel, stay, pickup, location, instagram, story, totalText],
   );
 
   // 入力が変わったら（コピー後に編集したら）コピー状態は無効化する
@@ -150,6 +221,8 @@ export function BookingForm({ planOptions, defaultPlan }: Props) {
     if (typeof s.phone === "string") setPhone(s.phone);
     if (typeof s.hotel === "string") setHotel(s.hotel);
     if (typeof s.stay === "string") setStay(s.stay);
+    if (typeof s.pickup === "boolean") setPickup(s.pickup);
+    if (typeof s.location === "boolean") setLocation(s.location);
     if (typeof s.instagram === "string") setInstagram(s.instagram);
     if (typeof s.story === "boolean") setStory(s.story);
   }
@@ -178,12 +251,12 @@ export function BookingForm({ planOptions, defaultPlan }: Props) {
     try {
       localStorage.setItem(
         STORAGE_KEY,
-        JSON.stringify({ date, plan, name, adults, children, phone, hotel, stay, instagram, story }),
+        JSON.stringify({ date, plan, name, adults, children, phone, hotel, stay, pickup, location, instagram, story }),
       );
     } catch {
       // 保存できない環境では何もしない
     }
-  }, [date, plan, name, adults, children, phone, hotel, stay, instagram, story]);
+  }, [date, plan, name, adults, children, phone, hotel, stay, pickup, location, instagram, story]);
 
   function handleClear() {
     setDate("");
@@ -194,6 +267,8 @@ export function BookingForm({ planOptions, defaultPlan }: Props) {
     setPhone("");
     setHotel("");
     setStay("");
+    setPickup(false);
+    setLocation(false);
     setInstagram("");
     setStory(false);
     setStatus("idle");
@@ -328,7 +403,7 @@ export function BookingForm({ planOptions, defaultPlan }: Props) {
             </div>
             <div>
               <label htmlFor="children" className="mb-1.5 block text-sm font-medium text-zinc-200">
-                3歳以下の人数
+                子ども（0〜15才）
               </label>
               <input
                 id="children"
@@ -387,6 +462,39 @@ export function BookingForm({ planOptions, defaultPlan }: Props) {
             />
           </div>
 
+          {/* オプション */}
+          <fieldset>
+            <legend className="mb-1.5 block text-sm font-medium text-zinc-200">
+              オプション（任意）
+            </legend>
+            <div className="space-y-2">
+              <label className="flex items-center justify-between gap-2 rounded-lg border border-teal-200/15 bg-[#050814]/60 px-4 py-3 text-sm text-zinc-200">
+                <span className="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    checked={pickup}
+                    onChange={(e) => setPickup(e.target.checked)}
+                    className="h-4 w-4 rounded border-teal-200/20 bg-[#050814] accent-teal-300"
+                  />
+                  送迎（3名まで）
+                </span>
+                <span className="text-amber-200">+{formatPrice(pickupPrice)}</span>
+              </label>
+              <label className="flex items-center justify-between gap-2 rounded-lg border border-teal-200/15 bg-[#050814]/60 px-4 py-3 text-sm text-zinc-200">
+                <span className="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    checked={location}
+                    onChange={(e) => setLocation(e.target.checked)}
+                    className="h-4 w-4 rounded border-teal-200/20 bg-[#050814] accent-teal-300"
+                  />
+                  場所指定（撮りたい場所をリクエスト）
+                </span>
+                <span className="text-zinc-400">応相談</span>
+              </label>
+            </div>
+          </fieldset>
+
           <div>
             <label htmlFor="instagram" className="mb-1.5 block text-sm font-medium text-zinc-200">
               Instagram（任意）
@@ -409,6 +517,37 @@ export function BookingForm({ planOptions, defaultPlan }: Props) {
               ストーリーへのタグ付けOK
             </label>
           </div>
+        </div>
+
+        {/* お会計（概算） */}
+        <div className="mt-6 rounded-lg border border-amber-200/25 bg-amber-300/5 p-5">
+          <div className="flex items-baseline justify-between gap-3">
+            <span className="text-sm font-medium text-zinc-200">お会計（概算）</span>
+            <span className="text-right text-xl font-bold text-amber-200">
+              {plan && total != null ? formatPrice(total) : totalText}
+            </span>
+          </div>
+          {plan && total != null && location && (
+            <p className="mt-1 text-right text-xs text-zinc-400">＋ 場所指定（応相談）</p>
+          )}
+          {breakdown.length > 0 && (
+            <ul className="mt-3 space-y-0.5 text-xs text-zinc-400">
+              {breakdown.map((b) => (
+                <li key={b}>・{b}</li>
+              ))}
+            </ul>
+          )}
+          {selectedPlan?.kind === "perGroup" && (
+            <p className="mt-2 text-xs text-zinc-500">
+              ※{selectedPlan.name}は人数に関わらず1組あたりの料金です。
+            </p>
+          )}
+          <p className="mt-3 text-xs font-medium text-amber-100/80">
+            💴 お支払いは「現地にて現金決済のみ」です。
+          </p>
+          <p className="mt-1 text-xs text-zinc-500">
+            ※上記は概算です。最終金額はLINEで確定します。
+          </p>
         </div>
 
         <div className="mt-6 flex items-center justify-between gap-3 border-t border-teal-200/10 pt-5">
@@ -435,7 +574,7 @@ export function BookingForm({ planOptions, defaultPlan }: Props) {
             ref={previewRef}
             readOnly
             value={message}
-            rows={16}
+            rows={18}
             aria-label="送信内容プレビュー"
             className="mt-4 w-full resize-none rounded-lg border border-teal-200/15 bg-[#03040a]/85 p-4 text-xs leading-relaxed text-zinc-200 outline-none"
           />

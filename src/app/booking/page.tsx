@@ -3,7 +3,7 @@ import { buildMetadata } from "@/lib/seo";
 import { Section } from "@/components/ui/Section";
 import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
 import { BookingForm } from "@/components/booking/BookingForm";
-import { getPlans } from "@/data/plans";
+import { getPlans, planPriceKind, getPickupPrice } from "@/data/plans";
 
 export const metadata: Metadata = buildMetadata({
   title: "予約フォーム",
@@ -26,7 +26,14 @@ export default async function BookingPage({
   searchParams: Promise<{ plan?: string }>;
 }) {
   const { plan } = await searchParams;
-  const planOptions = getPlans().map((p) => ({ slug: p.slug, name: p.name }));
+  const planOptions = getPlans().map((p) => ({
+    slug: p.slug,
+    name: p.name,
+    kind: planPriceKind(p),
+    basePrice: p.priceFrom ?? null,
+    childPrice: p.childPrice ?? null,
+  }));
+  const pickupPrice = getPickupPrice();
 
   return (
     <Section>
@@ -55,7 +62,11 @@ export default async function BookingPage({
         ))}
       </ol>
 
-      <BookingForm planOptions={planOptions} defaultPlan={plan} />
+      <BookingForm
+        planOptions={planOptions}
+        defaultPlan={plan}
+        pickupPrice={pickupPrice}
+      />
     </Section>
   );
 }
