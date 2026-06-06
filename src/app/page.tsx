@@ -163,7 +163,7 @@ export default function Home() {
           {plans.map((plan, i) => (
             <div
               key={plan.slug}
-              className={`reveal-up w-[84%] max-w-[22rem] shrink-0 snap-start sm:w-auto sm:max-w-none sm:shrink ${i % 3 === 1 ? "delay-100" : i % 3 === 2 ? "delay-200" : ""}`}
+              className={`reveal-up w-[78%] max-w-[20rem] shrink-0 snap-start sm:w-auto sm:max-w-none sm:shrink ${i % 3 === 1 ? "delay-100" : i % 3 === 2 ? "delay-200" : ""}`}
             >
               <PlanCard plan={plan} />
             </div>

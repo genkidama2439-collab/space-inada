@@ -50,7 +50,7 @@ export default function PlansPage() {
         {plans.map((plan) => (
           <div
             key={plan.slug}
-            className="w-[84%] max-w-[22rem] shrink-0 snap-start sm:w-auto sm:max-w-none sm:shrink"
+            className="w-[78%] max-w-[20rem] shrink-0 snap-start sm:w-auto sm:max-w-none sm:shrink"
           >
             <PlanCard plan={plan} />
           </div>

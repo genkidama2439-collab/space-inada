@@ -13,10 +13,10 @@ export function PlanCard({ plan }: { plan: Plan }) {
       href={`/plans/${plan.slug}`}
       className="cosmic-panel cosmic-panel-hover group flex h-full flex-col overflow-hidden rounded-2xl"
     >
-      <div className="relative aspect-[16/10] w-full overflow-hidden">
+      <div className="relative aspect-[16/9] w-full overflow-hidden sm:aspect-[16/10]">
         <ImageSlot
           asset={images[0]}
-          sizes="(max-width: 640px) 84vw, (max-width: 1024px) 50vw, 33vw"
+          sizes="(max-width: 640px) 78vw, (max-width: 1024px) 50vw, 33vw"
           className="transition-transform duration-500 group-hover:scale-105"
         />
         <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-slate-950/80 to-transparent" />
@@ -31,7 +31,7 @@ export function PlanCard({ plan }: { plan: Plan }) {
           </span>
         )}
       </div>
-      <div className="flex flex-1 flex-col p-5 sm:p-6">
+      <div className="flex flex-1 flex-col p-4 sm:p-6">
         <div className="flex flex-wrap gap-1.5">
           {plan.forWhom.map((w) => (
             <span
@@ -42,22 +42,22 @@ export function PlanCard({ plan }: { plan: Plan }) {
             </span>
           ))}
         </div>
-        <h3 className="mt-4 text-xl font-bold text-white group-hover:text-teal-100">
+        <h3 className="mt-3 text-lg font-bold text-white group-hover:text-teal-100 sm:mt-4 sm:text-xl">
           {plan.name}
         </h3>
-        <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-zinc-400">
+        <p className="mt-1.5 line-clamp-2 text-sm leading-relaxed text-zinc-400 sm:mt-2">
           {plan.tagline}
         </p>
 
-        <div className="mt-5 rounded-xl border border-amber-200/20 bg-amber-300/[0.06] p-4">
+        <div className="mt-4 rounded-xl border border-amber-200/20 bg-amber-300/[0.06] p-3 sm:mt-5 sm:p-4">
           <p className="text-[10px] font-semibold tracking-[0.18em] text-amber-200/70">
             料金（税込）
           </p>
-          <p className="mt-1 text-xl font-bold text-amber-100">
+          <p className="mt-1 text-lg font-bold text-amber-100 sm:text-xl">
             {planPriceLabel(plan)}
           </p>
           {typeof plan.priceFrom === "number" && (
-            <ul className="mt-2 space-y-1 text-xs leading-relaxed text-zinc-400">
+            <ul className="mt-2 space-y-1 text-[11px] leading-relaxed text-zinc-400 sm:text-xs">
               {plan.pricingDetail.slice(0, 3).map((line) => (
                 <li key={line}>{line}</li>
               ))}
@@ -65,12 +65,12 @@ export function PlanCard({ plan }: { plan: Plan }) {
           )}
         </div>
 
-        <dl className="mt-3 grid grid-cols-2 gap-2">
-          <div className="rounded-xl border border-white/10 bg-slate-950/35 p-3">
+        <dl className="mt-2.5 grid grid-cols-2 gap-2 sm:mt-3">
+          <div className="rounded-xl border border-white/10 bg-slate-950/35 p-2.5 sm:p-3">
             <dt className="text-[10px] text-zinc-500">撮影時間</dt>
             <dd className="mt-1 text-sm font-semibold text-white">{durationLabel}</dd>
           </div>
-          <div className="rounded-xl border border-white/10 bg-slate-950/35 p-3">
+          <div className="rounded-xl border border-white/10 bg-slate-950/35 p-2.5 sm:p-3">
             <dt className="text-[10px] text-zinc-500">納品データ</dt>
             <dd className="mt-1 text-sm font-semibold leading-snug text-white">
               {plan.deliveryCount}
@@ -78,14 +78,14 @@ export function PlanCard({ plan }: { plan: Plan }) {
           </div>
         </dl>
 
-        <div className="mt-3 flex gap-2.5 rounded-xl border border-teal-200/10 bg-teal-300/[0.05] p-3 text-xs leading-relaxed text-zinc-300">
+        <div className="mt-2.5 flex gap-2.5 rounded-xl border border-teal-200/10 bg-teal-300/[0.05] p-2.5 text-xs leading-relaxed text-zinc-300 sm:mt-3 sm:p-3">
           <span aria-hidden className="shrink-0 text-amber-300">
             ✦
           </span>
           <p>{plan.features[0]}</p>
         </div>
 
-        <span className="mt-auto flex items-center justify-between pt-5 text-sm font-semibold text-teal-200">
+        <span className="mt-auto flex items-center justify-between pt-4 text-sm font-semibold text-teal-200 sm:pt-5">
           プラン詳細を見る
           <span
             aria-hidden
