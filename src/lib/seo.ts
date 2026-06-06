@@ -33,7 +33,7 @@ export const siteConfig = {
     region: "沖縄県",
     locality: "宮古島市",
     telephone: "090-9279-9586",
-    email: "info@umigamekyoudaimiyakojima.com",
+    email: "miyako.keyphoto@gmail.com",
   },
   /** 位置情報（ローカルSEO）。宮古島の中心付近。集合場所は予約後案内のため一般的な座標 */
   geo: {
