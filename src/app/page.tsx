@@ -156,11 +156,14 @@ export default function Home() {
       {/* プラン紹介 */}
       <Section className="cosmic-band">
         <SectionHeading title="撮影プラン" href="/plans" />
-        <div className="-mx-5 mt-10 flex snap-x snap-mandatory gap-3 overflow-x-auto px-5 pb-4 [-webkit-overflow-scrolling:touch] [scrollbar-width:none] sm:mx-0 sm:grid sm:grid-cols-2 sm:gap-5 sm:overflow-visible sm:px-0 sm:pb-0 lg:grid-cols-3 [&::-webkit-scrollbar]:hidden">
+        <div
+          aria-label="撮影プラン一覧"
+          className="-mx-5 mt-10 flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-px-5 px-5 pb-5 [-webkit-overflow-scrolling:touch] [scrollbar-width:none] sm:mx-0 sm:grid sm:grid-cols-2 sm:gap-5 sm:overflow-visible sm:px-0 sm:pb-0 lg:grid-cols-3 [&::-webkit-scrollbar]:hidden"
+        >
           {plans.map((plan, i) => (
             <div
               key={plan.slug}
-              className={`reveal-up w-[70%] shrink-0 snap-start sm:w-auto sm:shrink ${i % 3 === 1 ? "delay-100" : i % 3 === 2 ? "delay-200" : ""}`}
+              className={`reveal-up w-[84%] max-w-[22rem] shrink-0 snap-start sm:w-auto sm:max-w-none sm:shrink ${i % 3 === 1 ? "delay-100" : i % 3 === 2 ? "delay-200" : ""}`}
             >
               <PlanCard plan={plan} />
             </div>

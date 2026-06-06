@@ -4,7 +4,11 @@ import { planPriceLabel, type Plan } from "@/data/plans";
 /** プラン料金比較表（横スクロール対応）。data/plans.ts を参照。 */
 export function PlanComparison({ plans }: { plans: Plan[] }) {
   return (
-    <div className="cosmic-panel -mx-5 overflow-x-auto rounded-lg px-5 sm:mx-0 sm:px-0">
+    <div
+      aria-label="プラン料金・内容比較表"
+      tabIndex={0}
+      className="cosmic-panel -mx-5 overflow-x-auto rounded-lg px-5 sm:mx-0 sm:px-0"
+    >
       <table className="w-full min-w-[680px] border-collapse text-left text-sm">
         <thead>
           <tr className="border-b border-teal-200/15 text-zinc-400">

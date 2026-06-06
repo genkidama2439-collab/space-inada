@@ -43,9 +43,15 @@ export default function PlansPage() {
         ご希望や人数、シーンに合わせてお選びいただけます。
       </p>
 
-      <div className="-mx-5 mt-12 flex snap-x snap-mandatory gap-3 overflow-x-auto px-5 pb-4 [-webkit-overflow-scrolling:touch] [scrollbar-width:none] sm:mx-0 sm:grid sm:grid-cols-2 sm:gap-5 sm:overflow-visible sm:px-0 sm:pb-0 lg:grid-cols-3 [&::-webkit-scrollbar]:hidden">
+      <div
+        aria-label="撮影プラン一覧"
+        className="-mx-5 mt-12 flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-px-5 px-5 pb-5 [-webkit-overflow-scrolling:touch] [scrollbar-width:none] sm:mx-0 sm:grid sm:grid-cols-2 sm:gap-5 sm:overflow-visible sm:px-0 sm:pb-0 lg:grid-cols-3 [&::-webkit-scrollbar]:hidden"
+      >
         {plans.map((plan) => (
-          <div key={plan.slug} className="w-[70%] shrink-0 snap-start sm:w-auto sm:shrink">
+          <div
+            key={plan.slug}
+            className="w-[84%] max-w-[22rem] shrink-0 snap-start sm:w-auto sm:max-w-none sm:shrink"
+          >
             <PlanCard plan={plan} />
           </div>
         ))}

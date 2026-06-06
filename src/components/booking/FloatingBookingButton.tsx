@@ -17,7 +17,7 @@ export function FloatingBookingButton() {
       href="/booking"
       onClick={() => trackEvent("floating_booking_click", { from: pathname })}
       aria-label="LINEで予約・相談する"
-      className="fixed bottom-5 right-4 z-50 flex h-14 items-center gap-2 rounded-lg border border-[#8ff0b8]/50 bg-[#06C755] px-6 text-sm font-bold text-white shadow-lg shadow-[#06C755]/30 transition-transform hover:scale-105 sm:right-6"
+      className="fixed bottom-5 right-4 z-50 flex h-14 items-center gap-2 rounded-lg border border-[#052e16]/30 bg-[#06C755] px-6 text-sm font-bold text-[#052e16] shadow-lg shadow-[#06C755]/30 transition-transform hover:scale-105 sm:right-6"
     >
       <span aria-hidden className="text-lg">💬</span>
       LINEで予約
