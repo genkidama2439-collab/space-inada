@@ -112,6 +112,12 @@ export const shootingVideo: VideoAsset = {
   label: "宮古島の星空のもとでの撮影の様子",
 };
 
+export const proposalBookingVideo: VideoAsset = {
+  src: "/videos/proposal-booking-flow.mp4",
+  poster: "/images/video/proposal-booking-flow-poster.jpg",
+  label: "プロポーズ撮影の予約フォームから公式LINEへ相談する流れ",
+};
+
 /* ───────────── About（代表・活動） ───────────── */
 export const aboutPortrait: ImageAsset = {
   src: "/images/about/inada-keiichi.jpg",

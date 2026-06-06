@@ -5,8 +5,9 @@ import { buildMetadata } from "@/lib/seo";
 import { Section } from "@/components/ui/Section";
 import { Button } from "@/components/ui/Button";
 import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
+import { VideoPlayer } from "@/components/media/VideoPlayer";
 import { PlanGallery } from "@/components/sections/PlanGallery";
-import { planImages } from "@/data/images";
+import { planImages, proposalBookingVideo } from "@/data/images";
 import { CtaBooking } from "@/components/sections/CtaBooking";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { serviceJsonLd } from "@/lib/jsonld";
@@ -109,6 +110,24 @@ export default async function PlanDetailPage({ params }: Props) {
           </li>
         ))}
       </ul>
+
+      {plan.slug === "propose" && (
+        <section className="mt-14">
+          <p className="cosmic-kicker text-xs font-semibold tracking-[0.2em]">
+            BOOKING FLOW
+          </p>
+          <h2 className="mt-3 text-2xl font-bold text-teal-100">
+            プロポーズ撮影のご予約・ご相談イメージ
+          </h2>
+          <p className="mt-3 max-w-2xl text-sm leading-relaxed text-zinc-400">
+            ご予約フォームから公式LINEへ相談するまでの流れをご覧いただけます。
+            当日の演出や段取りも、事前に相談しながら一緒に組み立てます。
+          </p>
+          <div className="cosmic-panel mt-6 overflow-hidden rounded-2xl bg-black sm:max-w-sm">
+            <VideoPlayer video={proposalBookingVideo} autoPlay={false} />
+          </div>
+        </section>
+      )}
 
       {/* 関連プラン */}
       <h2 className="mt-14 text-xl font-bold text-teal-100">ほかのプランも見る</h2>

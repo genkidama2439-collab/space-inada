@@ -109,7 +109,7 @@ ${v.totalText}
 }
 
 const inputClass =
-  "w-full rounded-lg border border-teal-200/15 bg-[#050814]/80 px-4 py-3 text-sm text-white placeholder:text-zinc-500 outline-none transition-colors focus:border-teal-200/70";
+  "min-w-0 w-full max-w-full rounded-lg border border-teal-200/15 bg-[#050814]/80 px-4 py-3 text-base text-white placeholder:text-zinc-500 outline-none transition-colors focus:border-teal-200/70 sm:text-sm";
 
 function RequiredBadge() {
   return (
@@ -321,11 +321,11 @@ export function BookingForm({ planOptions, defaultPlan, pickupPrice }: Props) {
   }
 
   return (
-    <div className="mt-10 grid gap-8 lg:grid-cols-2">
+    <div className="mt-10 grid min-w-0 max-w-full touch-pan-y gap-8 overflow-x-clip overscroll-x-none lg:grid-cols-2">
       {/* 入力フォーム（カード） */}
       <form
         onSubmit={(e) => e.preventDefault()}
-        className="cosmic-panel rounded-lg p-6 sm:p-8"
+        className="cosmic-panel min-w-0 max-w-full rounded-lg p-6 sm:p-8"
       >
         <h2 className="text-lg font-bold text-white">予約内容を入力</h2>
         <p className="mt-1 text-xs text-zinc-500">
@@ -386,8 +386,8 @@ export function BookingForm({ planOptions, defaultPlan, pickupPrice }: Props) {
             />
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
-            <div>
+          <div className="grid min-w-0 grid-cols-2 gap-4">
+            <div className="min-w-0">
               <label htmlFor="adults" className="mb-1.5 block text-sm font-medium text-zinc-200">
                 大人の人数
               </label>
@@ -401,7 +401,7 @@ export function BookingForm({ planOptions, defaultPlan, pickupPrice }: Props) {
                 className={inputClass}
               />
             </div>
-            <div>
+            <div className="min-w-0">
               <label htmlFor="children" className="mb-1.5 block text-sm font-medium text-zinc-200">
                 子ども（0〜15才）
               </label>
@@ -468,8 +468,8 @@ export function BookingForm({ planOptions, defaultPlan, pickupPrice }: Props) {
               オプション（任意）
             </legend>
             <div className="space-y-2">
-              <label className="flex items-center justify-between gap-2 rounded-lg border border-teal-200/15 bg-[#050814]/60 px-4 py-3 text-sm text-zinc-200">
-                <span className="flex items-center gap-2">
+              <label className="flex min-w-0 items-center justify-between gap-2 rounded-lg border border-teal-200/15 bg-[#050814]/60 px-4 py-3 text-sm text-zinc-200">
+                <span className="flex min-w-0 items-center gap-2">
                   <input
                     type="checkbox"
                     checked={pickup}
@@ -478,10 +478,12 @@ export function BookingForm({ planOptions, defaultPlan, pickupPrice }: Props) {
                   />
                   送迎（3名まで）
                 </span>
-                <span className="text-amber-200">+{formatPrice(pickupPrice)}</span>
+                <span className="shrink-0 text-amber-200">
+                  +{formatPrice(pickupPrice)}
+                </span>
               </label>
-              <label className="flex items-center justify-between gap-2 rounded-lg border border-teal-200/15 bg-[#050814]/60 px-4 py-3 text-sm text-zinc-200">
-                <span className="flex items-center gap-2">
+              <label className="flex min-w-0 items-center justify-between gap-2 rounded-lg border border-teal-200/15 bg-[#050814]/60 px-4 py-3 text-sm text-zinc-200">
+                <span className="flex min-w-0 items-center gap-2">
                   <input
                     type="checkbox"
                     checked={location}
@@ -490,7 +492,7 @@ export function BookingForm({ planOptions, defaultPlan, pickupPrice }: Props) {
                   />
                   場所指定（撮りたい場所をリクエスト）
                 </span>
-                <span className="text-zinc-400">応相談</span>
+                <span className="shrink-0 text-zinc-400">応相談</span>
               </label>
             </div>
           </fieldset>
@@ -563,8 +565,8 @@ export function BookingForm({ planOptions, defaultPlan, pickupPrice }: Props) {
       </form>
 
       {/* プレビュー + アクション */}
-      <div className="lg:sticky lg:top-20 lg:self-start">
-        <div className="cosmic-panel rounded-lg p-6 sm:p-8">
+      <div className="min-w-0 max-w-full lg:sticky lg:top-20 lg:self-start">
+        <div className="cosmic-panel min-w-0 max-w-full rounded-lg p-6 sm:p-8">
           <h2 className="text-lg font-bold text-white">送信内容プレビュー</h2>
           <p className="mt-1 text-xs text-zinc-500">
             この内容をコピーして、公式LINEのトークに貼り付けて送信してください。
@@ -576,7 +578,7 @@ export function BookingForm({ planOptions, defaultPlan, pickupPrice }: Props) {
             value={message}
             rows={18}
             aria-label="送信内容プレビュー"
-            className="mt-4 w-full resize-none rounded-lg border border-teal-200/15 bg-[#03040a]/85 p-4 text-xs leading-relaxed text-zinc-200 outline-none"
+            className="mt-4 min-w-0 w-full max-w-full resize-none rounded-lg border border-teal-200/15 bg-[#03040a]/85 p-4 text-base leading-relaxed text-zinc-200 outline-none sm:text-xs"
           />
 
           {/* ステータス表示 */}
