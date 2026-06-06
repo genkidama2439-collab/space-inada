@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import Link from "next/link";
 
 type NavItem = { href: string; label: string };
@@ -39,10 +40,13 @@ export function MobileMenu({ items }: { items: NavItem[] }) {
         </svg>
       </button>
 
-      {open && (
+      {open &&
+        createPortal(
         <div
           id="mobile-menu"
-          className="cosmic-page fixed inset-0 z-[60] bg-[#03040a]/96 backdrop-blur"
+          // body 直下に portal する。ヘッダーの backdrop-blur が fixed の包含ブロックに
+          // なってしまい 64px の帯に閉じ込められる問題を回避する。完全不透明で背景は透けない。
+          className="fixed inset-0 z-[60] overflow-y-auto bg-[#03040a] md:hidden"
           role="dialog"
           aria-modal="true"
           aria-label="サイトメニュー"
@@ -94,8 +98,9 @@ export function MobileMenu({ items }: { items: NavItem[] }) {
               </Link>
             </div>
           </nav>
-        </div>
-      )}
+        </div>,
+          document.body,
+        )}
     </div>
   );
 }
