@@ -1,10 +1,9 @@
-import Image from "next/image";
 import Link from "next/link";
-// 静的インポートすると next/image が blurDataURL を自動生成でき、
-// 読み込み中はブラー → 実画像へ滑らかにフェードする（初回表示のちらつき防止）。
-// PC は横長、スマホは縦長のスペースシャトル画像を出し分ける。
-import heroDesktop from "../../../public/images/hero/hero-shuttle-desktop.jpg";
-import heroMobile from "../../../public/images/hero/hero-shuttle-mobile.jpg";
+
+// 24px の極小ぼかし（LQIP）。最初の1フレームからシャトルのぼかしを描画し、
+// 「青いグラデーション → 画像がパッと出る」初回ちらつきを防ぐ。インラインなので追加リクエスト不要。
+const HERO_LQIP =
+  "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAASABIAAD/4QCMRXhpZgAATU0AKgAAAAgABQESAAMAAAABAAEAAAEaAAUAAAABAAAASgEbAAUAAAABAAAAUgEoAAMAAAABAAIAAIdpAAQAAAABAAAAWgAAAAAAAABIAAAAAQAAAEgAAAABAAOgAQADAAAAAQABAACgAgAEAAAAAQAAABigAwAEAAAAAQAAAA0AAAAA/8AAEQgADQAYAwEiAAIRAQMRAf/EAB8AAAEFAQEBAQEBAAAAAAAAAAABAgMEBQYHCAkKC//EALUQAAIBAwMCBAMFBQQEAAABfQECAwAEEQUSITFBBhNRYQcicRQygZGhCCNCscEVUtHwJDNicoIJChYXGBkaJSYnKCkqNDU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6g4SFhoeIiYqSk5SVlpeYmZqio6Slpqeoqaqys7S1tre4ubrCw8TFxsfIycrS09TV1tfY2drh4uPk5ebn6Onq8fLz9PX29/j5+v/EAB8BAAMBAQEBAQEBAQEAAAAAAAABAgMEBQYHCAkKC//EALURAAIBAgQEAwQHBQQEAAECdwABAgMRBAUhMQYSQVEHYXETIjKBCBRCkaGxwQkjM1LwFWJy0QoWJDThJfEXGBkaJicoKSo1Njc4OTpDREVGR0hJSlNUVVZXWFlaY2RlZmdoaWpzdHV2d3h5eoKDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uLj5OXm5+jp6vLz9PX29/j5+v/bAEMAAgICAgICAwICAwUDAwMFBgUFBQUGCAYGBgYGCAoICAgICAgKCgoKCgoKCgwMDAwMDA4ODg4ODw8PDw8PDw8PD//bAEMBAgICBAQEBwQEBxALCQsQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEP/dAAQAAv/aAAwDAQACEQMRAD8A/Ijwf4D1b+09Pae1eSDUQ3ktGN3mhThguO+eK+l7/wDY78YTfBa3+J9npjrCkkrzyMDvZC+xAsQBO1cdf7xPavLPg14w1nQNRc28pf7GiyW4blY5QwZXwc9DzjjNffmkfth/EQeHI7WS3heC3tzO6ZwJJHlwSRtwBg8AD0NeHnXE+YUuWjh6UWk976tvZWey/U+2yTg/AV4uvUqtSa2eyS3aa3d9vI/JW58B+IP7QudMWwkW4tQxlRlIMYXruz0/GqP/AAguv/8APqfzFfUnxV+JGp6hd3txp1umnR3xaSZVO9pC/PzuQC2D0zXgH/CUav8A89P0r1qONr1YRnKKi2tVvqePi8uwdGpKmpykk97JH//Z";
 
 /**
  * トップページのファーストビュー。
@@ -14,37 +13,29 @@ import heroMobile from "../../../public/images/hero/hero-shuttle-mobile.jpg";
 export function Hero() {
   return (
     <section className="relative -mt-16 flex min-h-[100svh] items-center justify-center overflow-hidden bg-[#050a1c] pt-16 md:mt-0 md:pt-0">
-      {/* 画像が未配置でも崩れないよう、背景に星空調のグラデーションを敷く */}
+      {/* 即時表示の LQIP（本画像ロード前のちらつき防止）。bg-cover で全面に敷く。 */}
       <div
         aria-hidden
-        className="absolute inset-0 bg-[radial-gradient(circle_at_50%_18%,rgba(56,128,210,0.35),transparent_42%),linear-gradient(180deg,#0a1733_0%,#070d22_48%,#04060f_100%)]"
-      />
-      <div
-        aria-hidden
-        className="absolute inset-0 opacity-70 [background-image:radial-gradient(circle,rgba(255,255,255,0.7)_0_1px,transparent_1.8px),radial-gradient(circle,rgba(165,243,252,0.4)_0_1px,transparent_1.6px)] [background-position:24px_44px,120px_150px] [background-size:200px_200px,300px_300px]"
+        className="absolute inset-0 bg-cover bg-center"
+        style={{ backgroundImage: `url("${HERO_LQIP}")` }}
       />
 
-      {/* メインのスペースシャトル画像（LCP対象。next/image で最適化＋object-cover）。
-          placeholder=blur で初回ロード時のちらつき（パッと出る現象）を防ぐ。
-          スマホ＝縦画像、PC（md以上）＝横画像を出し分ける。 */}
-      <Image
-        src={heroMobile}
-        alt="星空へ打ち上がるスペースシャトル｜スペースイナダ"
-        fill
-        priority
-        placeholder="blur"
-        sizes="100vw"
-        className="object-cover md:hidden"
-      />
-      <Image
-        src={heroDesktop}
-        alt="星空へ打ち上がるスペースシャトル｜スペースイナダ"
-        fill
-        priority
-        placeholder="blur"
-        sizes="100vw"
-        className="hidden object-cover md:block"
-      />
+      {/* 本画像：PC（md以上）＝横長 / スマホ＝縦長 を picture で出し分け。
+          表示される1枚だけをDLし（二重取得を回避）、誤った向きの一瞬表示も起きない。
+          fetchPriority=high で LCP を優先読み込み。 */}
+      <picture>
+        <source
+          media="(min-width: 768px)"
+          srcSet="/images/hero/hero-shuttle-desktop.jpg"
+        />
+        <img
+          src="/images/hero/hero-shuttle-mobile.jpg"
+          alt="星空へ打ち上がるスペースシャトル｜スペースイナダ"
+          fetchPriority="high"
+          decoding="async"
+          className="absolute inset-0 h-full w-full object-cover"
+        />
+      </picture>
 
       {/* 文字を読みやすくする暗めのグラデーション（上＝ヘッダー、下＝コピー/次セクション接続） */}
       <div
