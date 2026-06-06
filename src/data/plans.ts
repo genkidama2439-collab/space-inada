@@ -1,0 +1,214 @@
+/**
+ * プラン定義 = 単一の真実。
+ * 公式LINE「撮影メニュー」の実データに基づく。
+ * /plans 一覧・/plans/[plan] 詳細・sitemap・内部リンクがすべてこの配列を参照する。
+ */
+
+export type PlanSlug =
+  | "casual"
+  | "standard"
+  | "family"
+  | "creative"
+  | "propose";
+
+export type Plan = {
+  slug: PlanSlug;
+  name: string;
+  /** カードのバッジ（例: 人気No.1！） */
+  badge?: string;
+  /** 一覧やヒーローで使う一文 */
+  tagline: string;
+  /** 誰向けか（狙うKWと一致させる） */
+  forWhom: string[];
+  /** 表示する代表価格。未設定なら「詳細はお問い合わせ」 */
+  priceFrom?: number;
+  /** 価格の単位表記（例: "/人", "/組"） */
+  priceUnit?: string;
+  /** 料金内訳の各行 */
+  pricingDetail: string[];
+  /** 撮影時間（分）。未設定なら「応相談」 */
+  durationMin?: number;
+  deliveryCount: string;
+  features: string[];
+  /** このプランで狙う検索キーワード */
+  keywords: string[];
+  seo: {
+    title: string;
+    description: string;
+  };
+  /** sitemap lastModified 用（ISO日付） */
+  updatedAt: string;
+};
+
+export const plans: Plan[] = [
+  {
+    slug: "casual",
+    name: "カジュアルプラン",
+    badge: "手軽に体験！",
+    tagline: "手軽に宮古島の星空フォトを体験。",
+    forWhom: ["カップル", "友人同士", "はじめての方"],
+    priceFrom: 7000,
+    priceUnit: "/人",
+    pricingDetail: ["大人 ¥7,000 / 人", "子供 ¥3,000 / 人（0〜15才）"],
+    durationMin: 15,
+    deliveryCount: "約8枚",
+    features: [
+      "手軽に楽しめる星空フォト体験",
+      "満天の星空を背景に撮影",
+      "ポーズが苦手でも安心のディレクション",
+    ],
+    keywords: ["宮古島 カップル フォト", "宮古島 星空フォト"],
+    seo: {
+      title: "カジュアルプラン｜宮古島のカップル星空フォト",
+      description:
+        "宮古島で手軽に楽しめるカップル向け星空フォトプラン。大人¥7,000/人から、満天の星空を背景にプロが撮影。はじめての方も安心です。",
+    },
+    updatedAt: "2026-06-06",
+  },
+  {
+    slug: "standard",
+    name: "スタンダードプラン",
+    badge: "人気No.1！",
+    tagline: "30分いっぱい撮ろう！記念日・家族・カップルの定番。",
+    forWhom: ["記念日", "家族", "カップル"],
+    priceFrom: 9000,
+    priceUnit: "/人",
+    pricingDetail: ["大人 ¥9,000 / 人", "子供 ¥5,000 / 人（0〜15才）"],
+    durationMin: 30,
+    deliveryCount: "データ全て",
+    features: [
+      "30分たっぷり撮影",
+      "撮影データはすべてお渡し",
+      "記念日・家族・カップルに最適",
+    ],
+    keywords: ["宮古島 記念日 写真", "宮古島 家族写真", "宮古島 カップル フォト"],
+    seo: {
+      title: "スタンダードプラン｜宮古島の記念日・家族星空フォト",
+      description:
+        "宮古島の星空を背景に記念日や家族写真を残す人気No.1プラン。大人¥9,000/人、30分たっぷり撮影、撮影データはすべてお渡しします。",
+    },
+    updatedAt: "2026-06-06",
+  },
+  {
+    slug: "family",
+    name: "ファミリープラン",
+    badge: "みんなで思い出に",
+    tagline: "家族みんなでの撮影に。",
+    forWhom: ["家族", "三世代", "グループ"],
+    priceFrom: 18000,
+    priceUnit: "/組",
+    pricingDetail: ["1組 ¥18,000", "※ソロショットなし"],
+    durationMin: 20,
+    deliveryCount: "約10枚",
+    features: [
+      "家族みんなを一緒に撮影",
+      "星空を背景にした集合カット",
+      "お子様連れも安心",
+    ],
+    keywords: ["宮古島 家族写真", "宮古島 星空フォト"],
+    seo: {
+      title: "ファミリープラン｜宮古島の家族星空フォト",
+      description:
+        "宮古島の星空を背景に家族写真を残すプラン。1組¥18,000、約20分の撮影で家族みんなの思い出を一枚に。お子様連れも安心です。",
+    },
+    updatedAt: "2026-06-06",
+  },
+  {
+    slug: "creative",
+    name: "クリエイティブプラン",
+    badge: "他にはない撮影✨",
+    tagline: "電飾を使った、他にはない特別な一枚（カップル/夫婦限定）。",
+    forWhom: ["カップル", "夫婦", "作品性重視"],
+    priceFrom: 28000,
+    priceUnit: "/組",
+    pricingDetail: ["1組 ¥28,000", "電飾3枚＋通常カット", "※カップル/夫婦限定"],
+    durationMin: 30,
+    deliveryCount: "データ全て",
+    features: [
+      "電飾を使った他にはない演出",
+      "電飾3枚＋通常カット",
+      "撮影データはすべてお渡し",
+    ],
+    keywords: ["宮古島 星空フォト", "宮古島 天の川 写真"],
+    seo: {
+      title: "クリエイティブプラン｜宮古島の電飾星空フォト",
+      description:
+        "宮古島で電飾を使った他にはない星空フォト（カップル/夫婦限定）。1組¥28,000、電飾3枚＋通常カット、データ全てお渡しの特別なプランです。",
+    },
+    updatedAt: "2026-06-06",
+  },
+  {
+    slug: "propose",
+    name: "プロポーズプラン",
+    badge: "一生の思い出を",
+    tagline: "宮古島の星空の下で、人生最高のサプライズを。",
+    forWhom: ["プロポーズ", "サプライズ", "特別な告白"],
+    // 料金は内容により変動するため個別見積り
+    pricingDetail: ["詳細はお問い合わせください"],
+    deliveryCount: "ご相談に応じてご用意",
+    features: [
+      "サプライズの段取りを事前に綿密設計",
+      "決定的瞬間を逃さない撮影",
+      "リング・装飾などの演出サポート",
+    ],
+    keywords: ["宮古島 プロポーズ 撮影", "宮古島 記念日 写真"],
+    seo: {
+      title: "プロポーズプラン｜宮古島の星空プロポーズ撮影",
+      description:
+        "宮古島の満天の星空の下でプロポーズを成功させる撮影プラン。サプライズの段取りから決定的瞬間の撮影まで、一生の思い出を確実に残します。",
+    },
+    updatedAt: "2026-06-06",
+  },
+];
+
+/** 追加オプション（公式LINEメニューより） */
+export type PlanOption = {
+  name: string;
+  detail: string[];
+  priceFrom?: number;
+  priceNote?: string;
+};
+
+export const planOptions: PlanOption[] = [
+  {
+    name: "送迎",
+    detail: ["行き帰り安心！3名まで", "※4名からは要相談"],
+    priceFrom: 5000,
+  },
+  {
+    name: "場所指定",
+    detail: ["インスタで見た撮りたい場所を指定"],
+    priceNote: "応相談",
+  },
+];
+
+export function getPlans(): Plan[] {
+  return plans;
+}
+
+export function getPlan(slug: string): Plan | undefined {
+  return plans.find((p) => p.slug === slug);
+}
+
+export function getPlanOptions(): PlanOption[] {
+  return planOptions;
+}
+
+/** 表示用の価格レンジ（priceFrom が設定されたプランのみ対象）。 */
+export function getPriceRange(): { min: number; max: number } | null {
+  const prices = plans
+    .map((p) => p.priceFrom)
+    .filter((v): v is number => typeof v === "number");
+  if (prices.length === 0) return null;
+  return { min: Math.min(...prices), max: Math.max(...prices) };
+}
+
+export function formatPrice(yen: number): string {
+  return `¥${yen.toLocaleString("ja-JP")}`;
+}
+
+/** カード等で使う価格の表示文字列（未設定なら「詳細はお問い合わせ」）。 */
+export function planPriceLabel(plan: Plan): string {
+  if (typeof plan.priceFrom !== "number") return "詳細はお問い合わせ";
+  return `${formatPrice(plan.priceFrom)}${plan.priceUnit ?? ""}〜`;
+}

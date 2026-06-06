@@ -1,0 +1,64 @@
+import type { Metadata } from "next";
+import { buildMetadata } from "@/lib/seo";
+import { Section } from "@/components/ui/Section";
+import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
+import { TestimonialCard } from "@/components/sections/TestimonialCard";
+import { CtaBooking } from "@/components/sections/CtaBooking";
+import { JsonLd } from "@/components/seo/JsonLd";
+import { reviewsJsonLd } from "@/lib/jsonld";
+import { getTestimonials, getAverageRating } from "@/data/testimonials";
+
+export const metadata: Metadata = buildMetadata({
+  title: "お客様の声・口コミ",
+  description:
+    "宮古島の星空フォトをご利用いただいたお客様の声・口コミ。プロポーズ・記念日・家族写真など、実際の撮影体験の感想をご紹介します。",
+  path: "/voice",
+});
+
+/**
+ * レビュー構造化データ（Review/AggregateRating）の出力フラグ。
+ * ⚠️ 実体のない評価の公開はポリシー違反のため既定で OFF。
+ *    本物の口コミ・評価に差し替えたら NEXT_PUBLIC_ENABLE_REVIEW_SCHEMA=true で有効化する。
+ */
+const SHOW_REVIEW_SCHEMA =
+  process.env.NEXT_PUBLIC_ENABLE_REVIEW_SCHEMA === "true";
+
+export default function VoicePage() {
+  const testimonials = getTestimonials();
+  const average = getAverageRating();
+
+  return (
+    <Section>
+      {SHOW_REVIEW_SCHEMA && (
+        <JsonLd data={reviewsJsonLd(testimonials, average)} />
+      )}
+      <Breadcrumbs items={[{ name: "お客様の声", path: "/voice" }]} />
+
+      <h1 className="cosmic-title mt-6 text-3xl font-bold sm:text-4xl">
+        お客様の声・口コミ
+      </h1>
+      <p className="mt-4 max-w-2xl text-sm leading-relaxed text-zinc-400">
+        宮古島の星空フォトをご利用いただいた皆さまの感想です。
+        プロポーズや記念日、家族旅行など、それぞれの大切な瞬間をお手伝いしました。
+      </p>
+
+      <div className="mt-6 flex items-center gap-3">
+        <span className="text-3xl font-bold text-amber-200">{average}</span>
+        <span className="text-amber-200">{"★".repeat(Math.round(average))}</span>
+        <span className="text-sm text-zinc-500">
+          （{testimonials.length}件のレビュー）
+        </span>
+      </div>
+
+      <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        {testimonials.map((t) => (
+          <TestimonialCard key={`${t.name}-${t.date}`} testimonial={t} />
+        ))}
+      </div>
+
+      <div className="mt-20">
+        <CtaBooking heading="あなたの大切な一枚も、宮古島の星空で" />
+      </div>
+    </Section>
+  );
+}

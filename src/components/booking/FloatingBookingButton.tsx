@@ -1,0 +1,26 @@
+"use client";
+
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { trackEvent } from "@/lib/analytics";
+
+/**
+ * 全ページ追従の予約フローティングボタン（モバイルCV強化）。
+ * /booking 上では重複するため非表示。
+ */
+export function FloatingBookingButton() {
+  const pathname = usePathname();
+  if (pathname?.startsWith("/booking")) return null;
+
+  return (
+    <Link
+      href="/booking"
+      onClick={() => trackEvent("floating_booking_click", { from: pathname })}
+      aria-label="LINEで予約・相談する"
+      className="fixed bottom-5 right-4 z-50 flex h-14 items-center gap-2 rounded-lg border border-[#8ff0b8]/50 bg-[#06C755] px-6 text-sm font-bold text-white shadow-lg shadow-[#06C755]/30 transition-transform hover:scale-105 sm:right-6"
+    >
+      <span aria-hidden className="text-lg">💬</span>
+      LINEで予約
+    </Link>
+  );
+}
