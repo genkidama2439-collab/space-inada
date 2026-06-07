@@ -25,6 +25,8 @@ type Props = {
   defaultPlan?: string;
   /** 送迎オプションの料金 */
   pickupPrice: number;
+  /** スタッフ指名料 */
+  staffNominationPrice: number;
 };
 
 function formatDate(v: string): string {
@@ -53,6 +55,7 @@ function buildMessage(v: {
   hotel: string;
   stay: string;
   pickup: boolean;
+  staffNomination: boolean;
   location: boolean;
   instagram: string;
   story: boolean;
@@ -84,6 +87,7 @@ ${v.stay}
 
 ⑧ オプション：
 送迎：${v.pickup ? "希望する（+¥5,000）" : "なし"}
+スタッフ指名：${v.staffNomination ? "希望する（稲田 +¥2,000）" : "なし"}
 場所指定：${v.location ? "希望する（応相談）" : "なし"}
 
 ⑨ Instagram（任意）：
@@ -119,7 +123,12 @@ function RequiredBadge() {
   );
 }
 
-export function BookingForm({ planOptions, defaultPlan, pickupPrice }: Props) {
+export function BookingForm({
+  planOptions,
+  defaultPlan,
+  pickupPrice,
+  staffNominationPrice,
+}: Props) {
   const defaultPlanName =
     planOptions.find((p) => p.slug === defaultPlan)?.name ?? "";
 
@@ -132,6 +141,7 @@ export function BookingForm({ planOptions, defaultPlan, pickupPrice }: Props) {
   const [hotel, setHotel] = useState("");
   const [stay, setStay] = useState("");
   const [pickup, setPickup] = useState(false);
+  const [staffNomination, setStaffNomination] = useState(false);
   const [location, setLocation] = useState(false);
   const [instagram, setInstagram] = useState("");
   const [story, setStory] = useState(false);
@@ -146,6 +156,7 @@ export function BookingForm({ planOptions, defaultPlan, pickupPrice }: Props) {
   const adultsNum = Math.max(0, parseInt(adults, 10) || 0);
   const childrenNum = Math.max(0, parseInt(children, 10) || 0);
   const pickupAmount = pickup ? pickupPrice : 0;
+  const staffNominationAmount = staffNomination ? staffNominationPrice : 0;
 
   const total: number | null = useMemo(() => {
     if (!selectedPlan) return null;
@@ -153,14 +164,15 @@ export function BookingForm({ planOptions, defaultPlan, pickupPrice }: Props) {
       return (
         adultsNum * (selectedPlan.basePrice ?? 0) +
         childrenNum * (selectedPlan.childPrice ?? 0) +
-        pickupAmount
+        pickupAmount +
+        staffNominationAmount
       );
     }
     if (selectedPlan.kind === "perGroup") {
-      return (selectedPlan.basePrice ?? 0) + pickupAmount;
+      return (selectedPlan.basePrice ?? 0) + pickupAmount + staffNominationAmount;
     }
     return null; // quote（プロポーズ等）
-  }, [selectedPlan, adultsNum, childrenNum, pickupAmount]);
+  }, [selectedPlan, adultsNum, childrenNum, pickupAmount, staffNominationAmount]);
 
   // 表示・送信用の合計テキスト
   const totalText = useMemo(() => {
@@ -171,21 +183,31 @@ export function BookingForm({ planOptions, defaultPlan, pickupPrice }: Props) {
 
   // 内訳行（UI表示用）
   const breakdown = useMemo(() => {
-    if (!selectedPlan || total == null) return [] as string[];
     const lines: string[] = [];
-    if (selectedPlan.kind === "perPerson") {
+    if (selectedPlan?.kind === "perPerson") {
       lines.push(`大人 ${adultsNum}名 × ${formatPrice(selectedPlan.basePrice ?? 0)}`);
       if (childrenNum > 0) {
         lines.push(
           `子ども ${childrenNum}名 × ${formatPrice(selectedPlan.childPrice ?? 0)}`,
         );
       }
-    } else if (selectedPlan.kind === "perGroup") {
+    } else if (selectedPlan?.kind === "perGroup") {
       lines.push(`${selectedPlan.name} 1組 ${formatPrice(selectedPlan.basePrice ?? 0)}`);
     }
     if (pickup) lines.push(`送迎 +${formatPrice(pickupPrice)}`);
+    if (staffNomination) {
+      lines.push(`スタッフ指名 +${formatPrice(staffNominationPrice)}（稲田）`);
+    }
     return lines;
-  }, [selectedPlan, total, adultsNum, childrenNum, pickup, pickupPrice]);
+  }, [
+    selectedPlan,
+    adultsNum,
+    childrenNum,
+    pickup,
+    pickupPrice,
+    staffNomination,
+    staffNominationPrice,
+  ]);
 
   const message = useMemo(
     () =>
@@ -199,12 +221,28 @@ export function BookingForm({ planOptions, defaultPlan, pickupPrice }: Props) {
         hotel,
         stay,
         pickup,
+        staffNomination,
         location,
         instagram,
         story,
         totalText,
       }),
-    [date, plan, name, adults, children, phone, hotel, stay, pickup, location, instagram, story, totalText],
+    [
+      date,
+      plan,
+      name,
+      adults,
+      children,
+      phone,
+      hotel,
+      stay,
+      pickup,
+      staffNomination,
+      location,
+      instagram,
+      story,
+      totalText,
+    ],
   );
 
   // 入力が変わったら（コピー後に編集したら）コピー状態は無効化する
@@ -222,6 +260,7 @@ export function BookingForm({ planOptions, defaultPlan, pickupPrice }: Props) {
     if (typeof s.hotel === "string") setHotel(s.hotel);
     if (typeof s.stay === "string") setStay(s.stay);
     if (typeof s.pickup === "boolean") setPickup(s.pickup);
+    if (typeof s.staffNomination === "boolean") setStaffNomination(s.staffNomination);
     if (typeof s.location === "boolean") setLocation(s.location);
     if (typeof s.instagram === "string") setInstagram(s.instagram);
     if (typeof s.story === "boolean") setStory(s.story);
@@ -251,12 +290,40 @@ export function BookingForm({ planOptions, defaultPlan, pickupPrice }: Props) {
     try {
       localStorage.setItem(
         STORAGE_KEY,
-        JSON.stringify({ date, plan, name, adults, children, phone, hotel, stay, pickup, location, instagram, story }),
+        JSON.stringify({
+          date,
+          plan,
+          name,
+          adults,
+          children,
+          phone,
+          hotel,
+          stay,
+          pickup,
+          staffNomination,
+          location,
+          instagram,
+          story,
+        }),
       );
     } catch {
       // 保存できない環境では何もしない
     }
-  }, [date, plan, name, adults, children, phone, hotel, stay, pickup, location, instagram, story]);
+  }, [
+    date,
+    plan,
+    name,
+    adults,
+    children,
+    phone,
+    hotel,
+    stay,
+    pickup,
+    staffNomination,
+    location,
+    instagram,
+    story,
+  ]);
 
   function handleClear() {
     setDate("");
@@ -268,6 +335,7 @@ export function BookingForm({ planOptions, defaultPlan, pickupPrice }: Props) {
     setHotel("");
     setStay("");
     setPickup(false);
+    setStaffNomination(false);
     setLocation(false);
     setInstagram("");
     setStory(false);
@@ -486,6 +554,20 @@ export function BookingForm({ planOptions, defaultPlan, pickupPrice }: Props) {
                 <span className="flex min-w-0 items-center gap-2">
                   <input
                     type="checkbox"
+                    checked={staffNomination}
+                    onChange={(e) => setStaffNomination(e.target.checked)}
+                    className="h-4 w-4 rounded border-teal-200/20 bg-[#050814] accent-teal-300"
+                  />
+                  スタッフ指名料（稲田）
+                </span>
+                <span className="shrink-0 text-amber-200">
+                  +{formatPrice(staffNominationPrice)}
+                </span>
+              </label>
+              <label className="flex min-w-0 items-center justify-between gap-2 rounded-lg border border-teal-200/15 bg-[#050814]/60 px-4 py-3 text-sm text-zinc-200">
+                <span className="flex min-w-0 items-center gap-2">
+                  <input
+                    type="checkbox"
                     checked={location}
                     onChange={(e) => setLocation(e.target.checked)}
                     className="h-4 w-4 rounded border-teal-200/20 bg-[#050814] accent-teal-300"
@@ -496,6 +578,20 @@ export function BookingForm({ planOptions, defaultPlan, pickupPrice }: Props) {
               </label>
             </div>
           </fieldset>
+
+          <div className="rounded-lg border border-amber-200/20 bg-amber-300/5 p-4 text-sm leading-relaxed text-zinc-300">
+            <p className="font-semibold text-amber-100">⚠️ お知らせ</p>
+            <p className="mt-2">
+              ※カメラマンは複数います。カメラマンを確実に指定したい場合は、指名料＋¥2,000でご指定ください。
+            </p>
+            <p className="mt-1">※現在は稲田が対応します。クオリティに差はありません。</p>
+            <p className="mt-3 font-semibold text-amber-100">⚠️</p>
+            <p className="mt-1">
+              深夜0時以降の撮影は＋¥1,000/人、深夜1時以降の撮影は＋¥2,000/人となります。ご了承ください。
+            </p>
+            <p className="mt-3 font-semibold text-amber-100">指名カメラマン</p>
+            <p className="mt-1">・稲田</p>
+          </div>
 
           <div>
             <label htmlFor="instagram" className="mb-1.5 block text-sm font-medium text-zinc-200">

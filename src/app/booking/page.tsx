@@ -34,6 +34,7 @@ export default async function BookingPage({
     childPrice: p.childPrice ?? null,
   }));
   const pickupPrice = getPickupPrice();
+  const staffNominationPrice = 2000;
 
   return (
     <Section>
@@ -66,6 +67,7 @@ export default async function BookingPage({
         planOptions={planOptions}
         defaultPlan={plan}
         pickupPrice={pickupPrice}
+        staffNominationPrice={staffNominationPrice}
       />
     </Section>
   );
