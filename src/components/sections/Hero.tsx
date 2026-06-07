@@ -13,6 +13,26 @@ const HERO_LQIP =
 export function Hero() {
   return (
     <section className="relative -mt-28 flex min-h-[100svh] items-center justify-center overflow-hidden bg-[#050a1c] pt-28 md:mt-0 md:pt-0">
+      {/* LCP（ヒーロー写真）を最優先で先読み。デバイスに合う1枚の AVIF だけを
+          取得するよう media で出し分け、HTMLパース前から並行ダウンロードを開始する。
+          React がこの <link> を <head> に巻き上げる。 */}
+      <link
+        rel="preload"
+        as="image"
+        href="/images/hero/hero-shuttle-mobile.avif"
+        type="image/avif"
+        media="(max-width: 767px)"
+        fetchPriority="high"
+      />
+      <link
+        rel="preload"
+        as="image"
+        href="/images/hero/hero-shuttle-desktop.avif"
+        type="image/avif"
+        media="(min-width: 768px)"
+        fetchPriority="high"
+      />
+
       {/* 即時表示の LQIP（本画像ロード前のちらつき防止）。bg-cover で全面に敷く。 */}
       <div
         aria-hidden
@@ -24,10 +44,24 @@ export function Hero() {
           表示される1枚だけをDLし（二重取得を回避）、誤った向きの一瞬表示も起きない。
           fetchPriority=high で LCP を優先読み込み。 */}
       <picture>
+        {/* PC（md以上）＝横長。AVIF → WebP → JPEG の順で軽い形式を優先 */}
+        <source
+          media="(min-width: 768px)"
+          type="image/avif"
+          srcSet="/images/hero/hero-shuttle-desktop.avif"
+        />
+        <source
+          media="(min-width: 768px)"
+          type="image/webp"
+          srcSet="/images/hero/hero-shuttle-desktop.webp"
+        />
         <source
           media="(min-width: 768px)"
           srcSet="/images/hero/hero-shuttle-desktop.jpg"
         />
+        {/* スマホ＝縦長。AVIF → WebP →（img の JPEG フォールバック） */}
+        <source type="image/avif" srcSet="/images/hero/hero-shuttle-mobile.avif" />
+        <source type="image/webp" srcSet="/images/hero/hero-shuttle-mobile.webp" />
         <img
           src="/images/hero/hero-shuttle-mobile.jpg"
           alt="星空へ打ち上がるスペースシャトル｜スペースイナダ"
