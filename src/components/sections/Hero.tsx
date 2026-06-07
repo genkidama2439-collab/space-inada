@@ -48,6 +48,48 @@ export function Hero() {
         className="absolute inset-0 bg-[radial-gradient(120%_90%_at_50%_38%,transparent_44%,rgba(2,4,14,0.6)_100%)]"
       />
 
+      {/* 星空が旋律のようにつながる、軽量なCSS/SVGアニメーション */}
+      <div aria-hidden className="cosmic-aurora-stage">
+        <span className="cosmic-aurora cosmic-aurora-one" />
+        <span className="cosmic-aurora cosmic-aurora-two" />
+      </div>
+      <div aria-hidden className="cosmic-orbit-map" />
+      <div aria-hidden className="cosmic-viewfinder">
+        <span className="cosmic-viewfinder-corner cosmic-viewfinder-tl" />
+        <span className="cosmic-viewfinder-corner cosmic-viewfinder-tr" />
+        <span className="cosmic-viewfinder-corner cosmic-viewfinder-bl" />
+        <span className="cosmic-viewfinder-corner cosmic-viewfinder-br" />
+        <span className="cosmic-focus-ring" />
+        <span className="cosmic-focus-dot" />
+      </div>
+      <svg
+        aria-hidden
+        className="cosmic-score"
+        viewBox="0 0 1000 420"
+        preserveAspectRatio="none"
+      >
+        <path
+          className="cosmic-score-line cosmic-score-line-one"
+          d="M-40 310 C120 250 175 110 330 165 S540 350 710 210 S900 85 1040 145"
+          pathLength="1"
+        />
+        <path
+          className="cosmic-score-line cosmic-score-line-two"
+          d="M-20 365 C150 335 225 205 390 250 S620 390 785 285 S930 205 1030 245"
+          pathLength="1"
+        />
+        <g className="cosmic-score-notes">
+          <circle className="cosmic-score-note note-one" cx="170" cy="205" r="4" />
+          <circle className="cosmic-score-note note-two" cx="330" cy="165" r="5" />
+          <circle className="cosmic-score-note note-three" cx="535" cy="290" r="4" />
+          <circle className="cosmic-score-note note-four" cx="710" cy="210" r="5" />
+          <circle className="cosmic-score-note note-five" cx="885" cy="110" r="4" />
+        </g>
+      </svg>
+      <span aria-hidden className="cosmic-meteor cosmic-meteor-one" />
+      <span aria-hidden className="cosmic-meteor cosmic-meteor-two" />
+      <span aria-hidden className="cosmic-meteor cosmic-meteor-three" />
+
       {/* コピー＋CTA */}
       <div className="relative z-10 mx-auto max-w-4xl px-5 text-center">
         <p className="text-sm font-semibold tracking-[0.4em] text-amber-200 drop-shadow-[0_0_18px_rgba(251,191,36,0.5)] sm:text-base">

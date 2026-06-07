@@ -13,13 +13,14 @@ export function PlanCard({ plan }: { plan: Plan }) {
       href={`/plans/${plan.slug}`}
       className="cosmic-panel cosmic-panel-hover group flex h-full flex-col overflow-hidden rounded-2xl"
     >
-      <div className="relative aspect-[16/9] w-full overflow-hidden sm:aspect-[16/10]">
+      <div className="cosmic-photo-stage relative aspect-[16/9] w-full overflow-hidden sm:aspect-[16/10]">
         <ImageSlot
           asset={images[0]}
           sizes="(max-width: 640px) 78vw, (max-width: 1024px) 50vw, 33vw"
           className="transition-transform duration-500 group-hover:scale-105"
         />
         <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-slate-950/80 to-transparent" />
+        <span aria-hidden className="cosmic-shutter-scan" />
         {photoCount > 1 && (
           <span className="absolute bottom-3 right-3 rounded-full border border-white/15 bg-black/55 px-2.5 py-1 text-[10px] font-semibold text-white backdrop-blur">
             写真 {photoCount}枚

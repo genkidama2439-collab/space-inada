@@ -97,8 +97,23 @@ body {
   animation: nebula-sweep 18s ease-in-out infinite alternate;
 }
 
+.cosmic-section::after {
+  content: "";
+  position: absolute;
+  inset: 4% 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 12% 28%, rgba(255, 255, 255, 0.72) 0 1px, transparent 1.8px),
+    radial-gradient(circle at 36% 72%, rgba(94, 234, 212, 0.55) 0 1px, transparent 1.8px),
+    radial-gradient(circle at 68% 18%, rgba(252, 211, 77, 0.5) 0 1px, transparent 1.8px),
+    radial-gradient(circle at 88% 62%, rgba(255, 255, 255, 0.62) 0 1px, transparent 1.8px);
+  opacity: 0.22;
+  animation: constellation-breathe 8s ease-in-out infinite;
+}
+
 .cosmic-section > * {
   position: relative;
+  z-index: 1;
 }
 
 .cosmic-band {
@@ -159,8 +174,176 @@ body {
     0 0 44px rgba(251, 191, 36, 0.12);
 }
 
+.cosmic-aurora-stage {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  overflow: hidden;
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+
+.cosmic-aurora {
+  position: absolute;
+  width: 75vw;
+  height: 38vh;
+  border-radius: 50%;
+  filter: blur(46px);
+  opacity: 0.16;
+  will-change: transform, opacity;
+}
+
+.cosmic-aurora-one {
+  --aurora-start-angle: -13deg;
+  --aurora-end-angle: -6deg;
+  left: -18%;
+  top: 13%;
+  background: linear-gradient(105deg, transparent 8%, rgba(45, 212, 191, 0.58), rgba(56, 189, 248, 0.2) 64%, transparent 88%);
+  transform: rotate(var(--aurora-start-angle));
+  animation: aurora-conduct 16s ease-in-out infinite alternate;
+}
+
+.cosmic-aurora-two {
+  --aurora-start-angle: 11deg;
+  --aurora-end-angle: 5deg;
+  right: -22%;
+  top: 27%;
+  background: linear-gradient(75deg, transparent 4%, rgba(244, 114, 182, 0.25), rgba(252, 211, 77, 0.38) 58%, transparent 88%);
+  transform: rotate(var(--aurora-start-angle));
+  animation: aurora-conduct 20s ease-in-out -7s infinite alternate-reverse;
+}
+
+.cosmic-viewfinder {
+  position: absolute;
+  inset: 10% 7%;
+  z-index: 4;
+  pointer-events: none;
+  opacity: 0.38;
+}
+
+.cosmic-viewfinder-corner {
+  position: absolute;
+  width: clamp(2rem, 5vw, 4.5rem);
+  height: clamp(2rem, 5vw, 4.5rem);
+  border-color: rgba(255, 255, 255, 0.38);
+}
+
+.cosmic-viewfinder-tl {
+  left: 0;
+  top: 0;
+  border-left: 1px solid;
+  border-top: 1px solid;
+}
+
+.cosmic-viewfinder-tr {
+  right: 0;
+  top: 0;
+  border-right: 1px solid;
+  border-top: 1px solid;
+}
+
+.cosmic-viewfinder-bl {
+  bottom: 0;
+  left: 0;
+  border-bottom: 1px solid;
+  border-left: 1px solid;
+}
+
+.cosmic-viewfinder-br {
+  bottom: 0;
+  right: 0;
+  border-bottom: 1px solid;
+  border-right: 1px solid;
+}
+
+.cosmic-focus-ring {
+  position: absolute;
+  left: 50%;
+  top: 48%;
+  width: clamp(4.5rem, 11vw, 8rem);
+  aspect-ratio: 1;
+  border: 1px solid rgba(94, 234, 212, 0.48);
+  border-left-color: rgba(252, 211, 77, 0.7);
+  border-radius: 50%;
+  box-shadow:
+    0 0 32px rgba(94, 234, 212, 0.12),
+    inset 0 0 24px rgba(94, 234, 212, 0.08);
+  transform: translate(-50%, -50%);
+  animation: focus-lock 7s ease-in-out infinite;
+}
+
+.cosmic-focus-dot {
+  position: absolute;
+  left: 50%;
+  top: 48%;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #fde68a;
+  box-shadow: 0 0 16px rgba(252, 211, 77, 0.85);
+  transform: translate(-50%, -50%);
+  animation: focus-dot 7s ease-in-out infinite;
+}
+
+.cosmic-score {
+  position: absolute;
+  inset: 17% -3% auto;
+  z-index: 3;
+  width: 106%;
+  height: 48%;
+  pointer-events: none;
+  overflow: visible;
+  opacity: 0.44;
+}
+
+.cosmic-score-line {
+  fill: none;
+  stroke-width: 1.15;
+  stroke-linecap: round;
+  stroke-dasharray: 0.08 0.035;
+  vector-effect: non-scaling-stroke;
+  animation: score-flow 16s linear infinite;
+}
+
+.cosmic-score-line-one {
+  stroke: rgba(94, 234, 212, 0.44);
+}
+
+.cosmic-score-line-two {
+  stroke: rgba(252, 211, 77, 0.32);
+  animation-direction: reverse;
+  animation-duration: 21s;
+}
+
+.cosmic-score-note {
+  fill: #fff;
+  filter: drop-shadow(0 0 8px rgba(94, 234, 212, 0.9));
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: star-note 4.8s ease-in-out infinite;
+}
+
+.cosmic-score-note.note-two {
+  animation-delay: -1s;
+  fill: #fde68a;
+}
+
+.cosmic-score-note.note-three {
+  animation-delay: -2.1s;
+}
+
+.cosmic-score-note.note-four {
+  animation-delay: -3.2s;
+  fill: #99f6e4;
+}
+
+.cosmic-score-note.note-five {
+  animation-delay: -4s;
+}
+
 .cosmic-meteor {
   position: absolute;
+  z-index: 4;
   height: 1px;
   width: 11rem;
   border-radius: 999px;
@@ -193,6 +376,7 @@ body {
 .cosmic-orbit-map {
   position: absolute;
   inset: 9% 8%;
+  z-index: 3;
   pointer-events: none;
   opacity: 0.35;
 }
@@ -225,6 +409,30 @@ body {
 .cosmic-link:hover {
   color: #fde68a;
   text-shadow: 0 0 16px rgba(251, 191, 36, 0.35);
+}
+
+.cosmic-photo-stage::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 72% 22%, rgba(255, 255, 255, 0.58) 0 1px, transparent 1.8px),
+    radial-gradient(circle at 24% 64%, rgba(94, 234, 212, 0.48) 0 1px, transparent 1.8px);
+  opacity: 0.35;
+  animation: photo-stars 5.5s ease-in-out infinite;
+}
+
+.cosmic-shutter-scan {
+  position: absolute;
+  inset: -20% auto -20% -45%;
+  width: 32%;
+  pointer-events: none;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), rgba(94, 234, 212, 0.14), transparent);
+  filter: blur(5px);
+  transform: skewX(-14deg);
+  opacity: 0;
+  animation: shutter-scan 8s ease-in-out infinite;
 }
 
 .cosmic-image-placeholder {
@@ -379,6 +587,131 @@ body {
   50% {
     opacity: 0.72;
     transform: rotate(-8deg) scale(1.02);
+  }
+}
+
+@keyframes aurora-conduct {
+  0% {
+    opacity: 0.08;
+    transform: translate3d(-4%, -3%, 0) rotate(var(--aurora-start-angle)) scale(0.92, 0.8);
+  }
+  55% {
+    opacity: 0.2;
+  }
+  100% {
+    opacity: 0.12;
+    transform: translate3d(15%, 7%, 0) rotate(var(--aurora-end-angle)) scale(1.12, 1);
+  }
+}
+
+@keyframes focus-lock {
+  0%,
+  100% {
+    opacity: 0.3;
+    transform: translate(-50%, -50%) rotate(0deg) scale(1.08);
+  }
+  45% {
+    opacity: 0.8;
+    transform: translate(-50%, -50%) rotate(110deg) scale(0.88);
+  }
+  58% {
+    opacity: 0.95;
+    transform: translate(-50%, -50%) rotate(135deg) scale(0.9);
+  }
+}
+
+@keyframes focus-dot {
+  0%,
+  42%,
+  100% {
+    opacity: 0.25;
+    transform: translate(-50%, -50%) scale(0.7);
+  }
+  50%,
+  58% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.8);
+  }
+}
+
+@keyframes score-flow {
+  to {
+    stroke-dashoffset: -0.46;
+  }
+}
+
+@keyframes star-note {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: scale(0.72);
+  }
+  45% {
+    opacity: 1;
+    transform: scale(1.55);
+  }
+}
+
+@keyframes constellation-breathe {
+  0%,
+  100% {
+    opacity: 0.14;
+    transform: translateY(0);
+  }
+  50% {
+    opacity: 0.38;
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes photo-stars {
+  0%,
+  100% {
+    opacity: 0.18;
+  }
+  45% {
+    opacity: 0.58;
+  }
+}
+
+@keyframes shutter-scan {
+  0%,
+  58% {
+    left: -45%;
+    opacity: 0;
+  }
+  64% {
+    opacity: 0.68;
+  }
+  78% {
+    left: 118%;
+    opacity: 0;
+  }
+  100% {
+    left: 118%;
+    opacity: 0;
+  }
+}
+
+@media (max-width: 639px) {
+  .cosmic-score {
+    inset: 19% -30% auto;
+    width: 160%;
+    opacity: 0.34;
+  }
+
+  .cosmic-aurora {
+    width: 110vw;
+    filter: blur(38px);
+  }
+
+  .cosmic-viewfinder {
+    inset: 12% 6% 9%;
+    opacity: 0.26;
+  }
+
+  .cosmic-meteor {
+    width: 7rem;
   }
 }
 
