@@ -12,7 +12,7 @@ const HERO_LQIP =
  */
 export function Hero() {
   return (
-    <section className="relative -mt-16 flex min-h-[100svh] items-center justify-center overflow-hidden bg-[#050a1c] pt-16 md:mt-0 md:pt-0">
+    <section className="relative -mt-28 flex min-h-[100svh] items-center justify-center overflow-hidden bg-[#050a1c] pt-28 md:mt-0 md:pt-0">
       {/* 即時表示の LQIP（本画像ロード前のちらつき防止）。bg-cover で全面に敷く。 */}
       <div
         aria-hidden

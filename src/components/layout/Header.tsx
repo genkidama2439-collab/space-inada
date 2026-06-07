@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Container } from "@/components/ui/Container";
 import { siteConfig } from "@/lib/seo";
 import { MobileMenu } from "./MobileMenu";
+import { MobilePrimaryNav } from "./MobilePrimaryNav";
 
 const nav = [
   { href: "/plans", label: "プラン" },
@@ -42,6 +43,7 @@ export function Header() {
           <MobileMenu items={nav} />
         </div>
       </Container>
+      <MobilePrimaryNav />
     </header>
   );
 }
