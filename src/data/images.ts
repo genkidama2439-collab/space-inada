@@ -86,7 +86,23 @@ export function planImage(plan: Plan): ImageAsset {
 /* ───────────── ブログ（slug別カバー） ───────────── */
 // 推奨: 横長 1600×900
 const POST_IMAGE_SRC: Record<string, string> = {
-  // "milky-way-miyakojima": "/images/blog/milky-way.jpg",
+  "miyakojima-stargazing-spots":
+    "/images/blog/miyakojima-stargazing-spots.jpg",
+  "miyakojima-starry-sky-season":
+    "/images/blog/miyakojima-starry-sky-season.jpg",
+  "milky-way-miyakojima": "/images/blog/milky-way-miyakojima.jpg",
+  "propose-photo-miyakojima":
+    "/images/blog/propose-photo-miyakojima.jpg",
+  "night-sightseeing-miyakojima":
+    "/images/blog/night-sightseeing-miyakojima.jpg",
+  "family-photo-miyakojima":
+    "/images/blog/family-photo-miyakojima.jpg",
+  "couple-photo-spot-miyakojima":
+    "/images/blog/couple-photo-spot-miyakojima.jpg",
+  "anniversary-photo-miyakojima":
+    "/images/blog/anniversary-photo-miyakojima.jpg",
+  "rain-weather-policy-miyakojima":
+    "/images/blog/rain-weather-policy-miyakojima.jpg",
 };
 
 export function postImage(post: Post): ImageAsset {
