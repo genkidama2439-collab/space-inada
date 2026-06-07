@@ -100,11 +100,11 @@ export function Hero() {
         </h1>
 
         <p className="mx-auto mt-8 max-w-2xl text-lg font-semibold leading-relaxed text-white drop-shadow-[0_2px_24px_rgba(4,8,28,0.75)] sm:text-2xl">
-          宮古島の夜空へ、記念日を打ち上げる。
+          星は、記憶を照らす。
         </p>
         <p className="mx-auto mt-4 max-w-xl text-sm leading-relaxed text-slate-200 drop-shadow-[0_1px_18px_rgba(4,8,28,0.75)] sm:text-base">
-          天の川まで肉眼で見える宮古島の星空を背景に、旅の一瞬を忘れられない一枚へ。
-          星空フォトの撮影プランをご相談ください。
+          宮古島の静かな夜、満天の星、天の川。
+          大切な人との時間を、忘れられない一枚に。
         </p>
 
         <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
