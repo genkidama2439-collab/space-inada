@@ -28,6 +28,8 @@ export default function BlogPage() {
       headline: p.title,
       url: absoluteUrl(`/blog/${p.slug}`),
       datePublished: p.publishedAt,
+      dateModified: p.updatedAt,
+      image: absoluteUrl(postImage(p).src ?? "/og/og-default.jpg"),
     })),
   };
 

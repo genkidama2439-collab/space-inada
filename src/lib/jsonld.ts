@@ -2,6 +2,7 @@ import { siteConfig, absoluteUrl, mapLink } from "./seo";
 import { getPriceRange, formatPrice, type Plan } from "@/data/plans";
 import type { Post } from "@/data/posts";
 import type { Testimonial } from "@/data/testimonials";
+import { postImage } from "@/data/images";
 
 /**
  * 構造化データ (JSON-LD) ビルダー。
@@ -10,6 +11,22 @@ import type { Testimonial } from "@/data/testimonials";
  */
 
 type Json = Record<string, unknown>;
+
+/** 全ページ共通：Google検索上のサイト名を明示する。 */
+export function websiteJsonLd(): Json {
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "@id": `${siteConfig.url}/#website`,
+    url: siteConfig.url,
+    name: siteConfig.name,
+    alternateName: "宮古島 星空フォト スペースイナダ",
+    inLanguage: "ja-JP",
+    publisher: {
+      "@id": `${siteConfig.url}/#business`,
+    },
+  };
+}
 
 /** 全ページ共通：事業者情報（ローカルSEO） */
 export function localBusinessJsonLd(): Json {
@@ -129,6 +146,8 @@ export function faqJsonLd(faqs: { q: string; a: string }[]): Json {
 /** ブログ記事：BlogPosting */
 export function articleJsonLd(post: Post): Json {
   const url = absoluteUrl(`/blog/${post.slug}`);
+  const coverImage = postImage(post);
+
   return {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
@@ -138,15 +157,20 @@ export function articleJsonLd(post: Post): Json {
     mainEntityOfPage: url,
     datePublished: post.publishedAt,
     dateModified: post.updatedAt,
-    image: absoluteUrl(siteConfig.ogImage),
+    image: absoluteUrl(coverImage.src ?? siteConfig.ogImage),
     author: {
       "@type": "Person",
       name: siteConfig.author.name,
+      url: absoluteUrl("/about"),
     },
     publisher: {
       "@type": "Organization",
       name: siteConfig.name,
       url: siteConfig.url,
+      logo: {
+        "@type": "ImageObject",
+        url: absoluteUrl("/icon.svg"),
+      },
     },
   };
 }

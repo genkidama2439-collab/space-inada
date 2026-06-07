@@ -5,7 +5,7 @@ import { siteConfig } from "@/lib/seo";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { JsonLd } from "@/components/seo/JsonLd";
-import { localBusinessJsonLd } from "@/lib/jsonld";
+import { localBusinessJsonLd, websiteJsonLd } from "@/lib/jsonld";
 import { GoogleAnalytics } from "@/components/analytics/GoogleAnalytics";
 import { FloatingBookingButton } from "@/components/booking/FloatingBookingButton";
 import { ScrollProgress } from "@/components/layout/ScrollProgress";
@@ -66,6 +66,7 @@ export default function RootLayout({
   return (
     <html lang="ja" className={`${notoSansJp.variable} antialiased`}>
       <body className="cosmic-page flex min-h-screen flex-col text-zinc-100">
+        <JsonLd data={websiteJsonLd()} />
         <JsonLd data={localBusinessJsonLd()} />
         <ScrollProgress />
         <a

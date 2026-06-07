@@ -2,6 +2,12 @@ import type { MetadataRoute } from "next";
 import { siteConfig } from "@/lib/seo";
 import { getPlans } from "@/data/plans";
 import { getPosts } from "@/data/posts";
+import {
+  aboutPortrait,
+  galleryImages,
+  planImages,
+  postImage,
+} from "@/data/images";
 import { assertDataIntegrity } from "@/lib/data-integrity";
 
 /**
@@ -15,35 +21,126 @@ export default function sitemap(): MetadataRoute.Sitemap {
   assertDataIntegrity();
 
   const base = siteConfig.url;
-  const now = new Date();
+  const plans = getPlans();
+  const posts = getPosts();
+  const siteUpdatedAt = new Date("2026-06-07");
+  const planUpdatedAt = new Date(
+    Math.max(...plans.map((plan) => new Date(plan.updatedAt).getTime())),
+  );
+  const blogUpdatedAt = new Date(
+    Math.max(...posts.map((post) => new Date(post.updatedAt).getTime())),
+  );
+  const imageUrl = (path: string) => `${base}${path}`;
+  const galleryImageUrls = galleryImages.flatMap((image) =>
+    image.src ? [imageUrl(image.src)] : [],
+  );
+  const planImageUrls = plans.flatMap((plan) =>
+    planImages(plan).flatMap((image) =>
+      image.src ? [imageUrl(image.src)] : [],
+    ),
+  );
+  const postImageUrls = posts.flatMap((post) => {
+    const image = postImage(post);
+    return image.src ? [imageUrl(image.src)] : [];
+  });
 
   const staticPages: MetadataRoute.Sitemap = [
-    { url: `${base}/`, lastModified: now, changeFrequency: "weekly", priority: 1 },
-    { url: `${base}/plans`, lastModified: now, changeFrequency: "monthly", priority: 0.9 },
-    { url: `${base}/booking`, lastModified: now, changeFrequency: "monthly", priority: 0.9 },
-    { url: `${base}/gallery`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },
-    { url: `${base}/voice`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },
-    { url: `${base}/about`, lastModified: now, changeFrequency: "yearly", priority: 0.6 },
-    { url: `${base}/faq`, lastModified: now, changeFrequency: "monthly", priority: 0.6 },
-    { url: `${base}/access`, lastModified: now, changeFrequency: "yearly", priority: 0.5 },
-    { url: `${base}/privacy`, lastModified: now, changeFrequency: "yearly", priority: 0.2 },
-    { url: `${base}/legal`, lastModified: now, changeFrequency: "yearly", priority: 0.2 },
-    { url: `${base}/blog`, lastModified: now, changeFrequency: "weekly", priority: 0.7 },
+    {
+      url: `${base}/`,
+      lastModified: siteUpdatedAt,
+      changeFrequency: "weekly",
+      priority: 1,
+      images: [
+        imageUrl("/images/hero/hero-shuttle-desktop.jpg"),
+        ...galleryImageUrls.slice(0, 6),
+      ],
+    },
+    {
+      url: `${base}/plans`,
+      lastModified: planUpdatedAt,
+      changeFrequency: "monthly",
+      priority: 0.9,
+      images: planImageUrls,
+    },
+    {
+      url: `${base}/booking`,
+      lastModified: siteUpdatedAt,
+      changeFrequency: "monthly",
+      priority: 0.9,
+    },
+    {
+      url: `${base}/gallery`,
+      lastModified: siteUpdatedAt,
+      changeFrequency: "monthly",
+      priority: 0.7,
+      images: galleryImageUrls,
+    },
+    {
+      url: `${base}/voice`,
+      lastModified: siteUpdatedAt,
+      changeFrequency: "monthly",
+      priority: 0.7,
+    },
+    {
+      url: `${base}/about`,
+      lastModified: siteUpdatedAt,
+      changeFrequency: "yearly",
+      priority: 0.6,
+      images: aboutPortrait.src ? [imageUrl(aboutPortrait.src)] : undefined,
+    },
+    {
+      url: `${base}/faq`,
+      lastModified: siteUpdatedAt,
+      changeFrequency: "monthly",
+      priority: 0.6,
+    },
+    {
+      url: `${base}/access`,
+      lastModified: siteUpdatedAt,
+      changeFrequency: "yearly",
+      priority: 0.5,
+    },
+    {
+      url: `${base}/privacy`,
+      lastModified: siteUpdatedAt,
+      changeFrequency: "yearly",
+      priority: 0.2,
+    },
+    {
+      url: `${base}/legal`,
+      lastModified: siteUpdatedAt,
+      changeFrequency: "yearly",
+      priority: 0.2,
+    },
+    {
+      url: `${base}/blog`,
+      lastModified: blogUpdatedAt,
+      changeFrequency: "weekly",
+      priority: 0.7,
+      images: postImageUrls,
+    },
   ];
 
-  const planPages: MetadataRoute.Sitemap = getPlans().map((p) => ({
+  const planPages: MetadataRoute.Sitemap = plans.map((p) => ({
     url: `${base}/plans/${p.slug}`,
     lastModified: new Date(p.updatedAt),
     changeFrequency: "monthly",
     priority: 0.8,
+    images: planImages(p).flatMap((image) =>
+      image.src ? [imageUrl(image.src)] : [],
+    ),
   }));
 
-  const postPages: MetadataRoute.Sitemap = getPosts().map((post) => ({
-    url: `${base}/blog/${post.slug}`,
-    lastModified: new Date(post.updatedAt),
-    changeFrequency: "monthly",
-    priority: 0.6,
-  }));
+  const postPages: MetadataRoute.Sitemap = posts.map((post) => {
+    const image = postImage(post);
+    return {
+      url: `${base}/blog/${post.slug}`,
+      lastModified: new Date(post.updatedAt),
+      changeFrequency: "monthly",
+      priority: 0.6,
+      images: image.src ? [imageUrl(image.src)] : undefined,
+    };
+  });
 
   return [...staticPages, ...planPages, ...postPages];
 }

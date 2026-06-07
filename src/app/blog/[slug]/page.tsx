@@ -23,12 +23,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const post = getPost(slug);
   if (!post) return {};
+  const coverImage = postImage(post);
+
   return buildMetadata({
     title: post.seo.title,
     description: post.seo.description,
     path: `/blog/${post.slug}`,
     type: "article",
-    ownOgImage: true,
+    images: coverImage.src ? [coverImage.src] : undefined,
   });
 }
 
