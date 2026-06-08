@@ -65,6 +65,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ja" className={`${notoSansJp.variable} antialiased`}>
+      <head>
+        {/* GA は afterInteractive で遅延読込のため preconnect ではなく軽量な dns-prefetch のみ。
+            重要リソースの接続枠を奪わずに名前解決だけ先行させる。 */}
+        <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+        <link rel="dns-prefetch" href="https://www.google-analytics.com" />
+      </head>
       <body className="cosmic-page flex min-h-screen flex-col text-zinc-100">
         <JsonLd data={websiteJsonLd()} />
         <JsonLd data={localBusinessJsonLd()} />
