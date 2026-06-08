@@ -51,8 +51,8 @@ export const siteConfig = {
     query: "宮古島市",
     embedUrl: process.env.NEXT_PUBLIC_MAP_EMBED_URL ?? "",
   },
-  /** SNS（sameAs 用）。確定後に追加 */
-  sameAs: [] as string[],
+  /** SNS（sameAs 用）。ナレッジグラフ強化のため公式アカウントを列挙 */
+  sameAs: ["https://www.instagram.com/_key_photo"] as string[],
   /** 既定 OG 画像（buildMetadata の各ページOG・JSON-LD 用の安定パス）。
       トップは app/opengraph-image.jpg がファイル規約で自動付与する */
   ogImage: "/og/og-default.jpg",
