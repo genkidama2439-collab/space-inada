@@ -51,7 +51,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "weekly",
       priority: 1,
       images: [
-        imageUrl("/images/hero/hero-shuttle-desktop.jpg"),
+        imageUrl("/images/hero/hero-star-desktop.jpg"),
         ...galleryImageUrls.slice(0, 6),
       ],
     },

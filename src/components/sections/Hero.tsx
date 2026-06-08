@@ -1,9 +1,9 @@
 import Link from "next/link";
 
-// 24px の極小ぼかし（LQIP）。最初の1フレームからシャトルのぼかしを描画し、
+// 24px の極小ぼかし（LQIP）。最初の1フレームから星空のぼかしを描画し、
 // 「青いグラデーション → 画像がパッと出る」初回ちらつきを防ぐ。インラインなので追加リクエスト不要。
 const HERO_LQIP =
-  "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAASABIAAD/4QCMRXhpZgAATU0AKgAAAAgABQESAAMAAAABAAEAAAEaAAUAAAABAAAASgEbAAUAAAABAAAAUgEoAAMAAAABAAIAAIdpAAQAAAABAAAAWgAAAAAAAABIAAAAAQAAAEgAAAABAAOgAQADAAAAAQABAACgAgAEAAAAAQAAABigAwAEAAAAAQAAAA0AAAAA/8AAEQgADQAYAwEiAAIRAQMRAf/EAB8AAAEFAQEBAQEBAAAAAAAAAAABAgMEBQYHCAkKC//EALUQAAIBAwMCBAMFBQQEAAABfQECAwAEEQUSITFBBhNRYQcicRQygZGhCCNCscEVUtHwJDNicoIJChYXGBkaJSYnKCkqNDU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6g4SFhoeIiYqSk5SVlpeYmZqio6Slpqeoqaqys7S1tre4ubrCw8TFxsfIycrS09TV1tfY2drh4uPk5ebn6Onq8fLz9PX29/j5+v/EAB8BAAMBAQEBAQEBAQEAAAAAAAABAgMEBQYHCAkKC//EALURAAIBAgQEAwQHBQQEAAECdwABAgMRBAUhMQYSQVEHYXETIjKBCBRCkaGxwQkjM1LwFWJy0QoWJDThJfEXGBkaJicoKSo1Njc4OTpDREVGR0hJSlNUVVZXWFlaY2RlZmdoaWpzdHV2d3h5eoKDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uLj5OXm5+jp6vLz9PX29/j5+v/bAEMAAgICAgICAwICAwUDAwMFBgUFBQUGCAYGBgYGCAoICAgICAgKCgoKCgoKCgwMDAwMDA4ODg4ODw8PDw8PDw8PD//bAEMBAgICBAQEBwQEBxALCQsQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEP/dAAQAAv/aAAwDAQACEQMRAD8A/Ijwf4D1b+09Pae1eSDUQ3ktGN3mhThguO+eK+l7/wDY78YTfBa3+J9npjrCkkrzyMDvZC+xAsQBO1cdf7xPavLPg14w1nQNRc28pf7GiyW4blY5QwZXwc9DzjjNffmkfth/EQeHI7WS3heC3tzO6ZwJJHlwSRtwBg8AD0NeHnXE+YUuWjh6UWk976tvZWey/U+2yTg/AV4uvUqtSa2eyS3aa3d9vI/JW58B+IP7QudMWwkW4tQxlRlIMYXruz0/GqP/AAguv/8APqfzFfUnxV+JGp6hd3txp1umnR3xaSZVO9pC/PzuQC2D0zXgH/CUav8A89P0r1qONr1YRnKKi2tVvqePi8uwdGpKmpykk97JH//Z";
+  "data:image/jpeg;base64,/9j/2wBDABQODxIPDRQSEBIXFRQYHjIhHhwcHj0sLiQySUBMS0dARkVQWnNiUFVtVkVGZIhlbXd7gYKBTmCNl4x9lnN+gXz/2wBDARUXFx4aHjshITt8U0ZTfHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHz/wAARCAAOABgDASIAAhEBAxEB/8QAGAAAAgMAAAAAAAAAAAAAAAAAAAUCAwT/xAAeEAACAgICAwAAAAAAAAAAAAABAgADBBExQSEycf/EABYBAQEBAAAAAAAAAAAAAAAAAAMBAv/EABURAQEAAAAAAAAAAAAAAAAAAAAB/9oADAMBAAIRAxEAPwBWuKQoHJ7OuZB8cD28Rk1oVCFQfe4svsJ3FFWPICjYEJVa24TNWP/Z";
 
 /**
  * トップページのファーストビュー。
@@ -19,7 +19,7 @@ export function Hero() {
       <link
         rel="preload"
         as="image"
-        href="/images/hero/hero-shuttle-mobile.avif"
+        href="/images/hero/hero-star-mobile.avif"
         type="image/avif"
         media="(max-width: 767px)"
         fetchPriority="high"
@@ -27,7 +27,7 @@ export function Hero() {
       <link
         rel="preload"
         as="image"
-        href="/images/hero/hero-shuttle-desktop.avif"
+        href="/images/hero/hero-star-desktop.avif"
         type="image/avif"
         media="(min-width: 768px)"
         fetchPriority="high"
@@ -48,23 +48,23 @@ export function Hero() {
         <source
           media="(min-width: 768px)"
           type="image/avif"
-          srcSet="/images/hero/hero-shuttle-desktop.avif"
+          srcSet="/images/hero/hero-star-desktop.avif"
         />
         <source
           media="(min-width: 768px)"
           type="image/webp"
-          srcSet="/images/hero/hero-shuttle-desktop.webp"
+          srcSet="/images/hero/hero-star-desktop.webp"
         />
         <source
           media="(min-width: 768px)"
-          srcSet="/images/hero/hero-shuttle-desktop.jpg"
+          srcSet="/images/hero/hero-star-desktop.jpg"
         />
         {/* スマホ＝縦長。AVIF → WebP →（img の JPEG フォールバック） */}
-        <source type="image/avif" srcSet="/images/hero/hero-shuttle-mobile.avif" />
-        <source type="image/webp" srcSet="/images/hero/hero-shuttle-mobile.webp" />
+        <source type="image/avif" srcSet="/images/hero/hero-star-mobile.avif" />
+        <source type="image/webp" srcSet="/images/hero/hero-star-mobile.webp" />
         <img
-          src="/images/hero/hero-shuttle-mobile.jpg"
-          alt="星空へ打ち上がるスペースシャトル｜スペースイナダ"
+          src="/images/hero/hero-star-mobile.jpg"
+          alt="宮古島の満天の星空と天の川｜KEY PHOTO 宮古島"
           fetchPriority="high"
           decoding="async"
           className="absolute inset-0 h-full w-full object-cover"
@@ -127,16 +127,13 @@ export function Hero() {
       {/* コピー＋CTA */}
       <div className="relative z-10 mx-auto max-w-4xl px-5 text-center">
         <p className="text-sm font-semibold tracking-[0.4em] text-amber-200 drop-shadow-[0_0_18px_rgba(251,191,36,0.5)] sm:text-base">
-          SPACE INADA
+          KEY PHOTO 宮古島
         </p>
-        <h1 className="mt-5 whitespace-nowrap text-[2.6rem] font-black tracking-wide text-white drop-shadow-[0_2px_36px_rgba(4,8,28,0.7)] sm:text-7xl lg:text-8xl">
-          スペースイナダ
+        <h1 className="mt-6 text-4xl font-black leading-tight tracking-wide text-white drop-shadow-[0_2px_36px_rgba(4,8,28,0.7)] sm:text-6xl lg:text-7xl">
+          星は、記憶を照らす。
         </h1>
 
-        <p className="mx-auto mt-8 max-w-2xl text-lg font-semibold leading-relaxed text-white drop-shadow-[0_2px_24px_rgba(4,8,28,0.75)] sm:text-2xl">
-          星は、記憶を照らす。
-        </p>
-        <p className="mx-auto mt-4 max-w-xl text-sm leading-relaxed text-slate-200 drop-shadow-[0_1px_18px_rgba(4,8,28,0.75)] sm:text-base">
+        <p className="mx-auto mt-6 max-w-xl text-sm leading-relaxed text-slate-200 drop-shadow-[0_1px_18px_rgba(4,8,28,0.75)] sm:text-base">
           宮古島の静かな夜、満天の星、天の川。
           大切な人との時間を、忘れられない一枚に。
         </p>

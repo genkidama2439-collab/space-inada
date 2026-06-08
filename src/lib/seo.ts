@@ -15,9 +15,9 @@ const SITE_URL = (
 ).replace(/\/$/, "");
 
 export const siteConfig = {
-  name: "スペースイナダ",
+  name: "KEY PHOTO 宮古島",
   /** title.template に使う短い屋号 */
-  shortName: "スペースイナダ",
+  shortName: "KEY PHOTO",
   url: SITE_URL,
   description:
     "宮古島の満天の星空・天の川を背景に、カップル・記念日・家族・プロポーズの一枚を撮影。星空フォトのプロが、宮古島でしか撮れない夜の思い出を残します。",

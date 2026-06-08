@@ -67,9 +67,22 @@ export default async function PlanDetailPage({ params }: Props) {
         {plan.tagline}
       </p>
 
-      <div className="mt-6">
-        <Button href={`/booking?plan=${plan.slug}`}>このプランを予約する</Button>
-      </div>
+      {plan.comingSoon ? (
+        <div className="mt-6 flex flex-col items-start gap-3 rounded-xl border border-amber-200/25 bg-amber-300/[0.06] p-5">
+          <p className="text-sm font-semibold tracking-[0.28em] text-amber-200">
+            COMING SOON ／ 近日公開
+          </p>
+          <p className="max-w-2xl text-sm leading-relaxed text-zinc-300">
+            こちらのプランは現在準備中です。公開までしばらくお待ちください。
+            公式LINEにご登録いただくと、公開・先行案内をいち早くお届けします。
+          </p>
+          <Button href="/booking">公式LINEで先行案内を受け取る</Button>
+        </div>
+      ) : (
+        <div className="mt-6">
+          <Button href={`/booking?plan=${plan.slug}`}>このプランを予約する</Button>
+        </div>
+      )}
 
       <PlanGallery images={planImages(plan)} priority />
 
@@ -146,10 +159,17 @@ export default async function PlanDetailPage({ params }: Props) {
       </div>
 
       <div className="mt-20">
-        <CtaBooking
-          heading={`${plan.name}を予約・相談する`}
-          bookingHref={`/booking?plan=${plan.slug}`}
-        />
+        {plan.comingSoon ? (
+          <CtaBooking
+            heading="公開をお楽しみに｜公式LINEで先行案内"
+            bookingHref="/booking"
+          />
+        ) : (
+          <CtaBooking
+            heading={`${plan.name}を予約・相談する`}
+            bookingHref={`/booking?plan=${plan.slug}`}
+          />
+        )}
       </div>
     </Section>
   );

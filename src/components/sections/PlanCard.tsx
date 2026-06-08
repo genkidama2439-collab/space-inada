@@ -31,6 +31,16 @@ export function PlanCard({ plan }: { plan: Plan }) {
             {plan.badge}
           </span>
         )}
+        {plan.comingSoon && (
+          <div className="absolute inset-0 flex flex-col items-center justify-center gap-1 bg-slate-950/55 text-center backdrop-blur-[1px]">
+            <span className="text-[10px] font-semibold tracking-[0.32em] text-amber-200">
+              COMING SOON
+            </span>
+            <span className="text-base font-black text-white drop-shadow-[0_2px_18px_rgba(4,8,28,0.8)]">
+              近日公開
+            </span>
+          </div>
+        )}
       </div>
       <div className="flex flex-1 flex-col p-4 sm:p-6">
         <div className="flex flex-wrap gap-1.5">

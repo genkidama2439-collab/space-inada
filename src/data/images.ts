@@ -61,6 +61,11 @@ const PLAN_IMAGE_SRC: Partial<Record<PlanSlug, string[]>> = {
     "/images/plans/propose-08-milkyway-grasshill-couple.jpg",
     "/images/plans/propose-09-milkyway-grasshill-facing.jpg",
   ],
+  // 看板プラン（近日公開）。スペースシャトルの世界観をカバーに。
+  "space-inada": [
+    "/images/plans/space-inada-shuttle.jpg",
+    "/images/gallery/standard-30-milkyway-landscape-nopeople.jpg",
+  ],
 };
 
 /** プランの写真をすべて返す（未設定ならプレースホルダー1枚）。 */

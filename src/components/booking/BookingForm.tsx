@@ -61,7 +61,7 @@ function buildMessage(v: {
   story: boolean;
   totalText: string;
 }): string {
-  return `【スペースイナダ ご予約・お問い合わせ】
+  return `【KEY PHOTO 宮古島 ご予約・お問い合わせ】
 
 ① 撮影希望日：
 ${formatDate(v.date)}

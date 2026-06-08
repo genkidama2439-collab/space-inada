@@ -20,7 +20,7 @@ export function websiteJsonLd(): Json {
     "@id": `${siteConfig.url}/#website`,
     url: siteConfig.url,
     name: siteConfig.name,
-    alternateName: "宮古島 星空フォト スペースイナダ",
+    alternateName: "宮古島 星空フォト キーフォト",
     inLanguage: "ja-JP",
     publisher: {
       "@id": `${siteConfig.url}/#business`,

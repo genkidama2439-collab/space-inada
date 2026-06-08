@@ -9,7 +9,8 @@ export type PlanSlug =
   | "standard"
   | "family"
   | "creative"
-  | "propose";
+  | "propose"
+  | "space-inada";
 
 export type Plan = {
   slug: PlanSlug;
@@ -40,6 +41,8 @@ export type Plan = {
   };
   /** sitemap lastModified 用（ISO日付） */
   updatedAt: string;
+  /** 近日公開（ティザー）。true なら料金・予約は出さず「近日公開」表示にする。 */
+  comingSoon?: boolean;
 };
 
 export const plans: Plan[] = [
@@ -163,6 +166,30 @@ export const plans: Plan[] = [
     },
     updatedAt: "2026-06-06",
   },
+  {
+    slug: "space-inada",
+    name: "スペース稲田 スペースシャトル星空ツアー",
+    badge: "近日公開",
+    comingSoon: true,
+    tagline:
+      "スペースシャトルに乗り込むような没入演出で、宮古島の星空を旅する特別ツアー。近日公開。",
+    forWhom: ["特別な体験", "記念日", "星空好き"],
+    // 料金・撮影時間・納品はすべて公開時に確定（comingSoon のため未設定）
+    pricingDetail: ["近日公開"],
+    deliveryCount: "近日公開",
+    features: [
+      "スペースシャトルの世界観で星空へ“出発”する没入型の演出",
+      "宮古島の夜空を巡る、スペース稲田だけのシグネチャー体験",
+      "詳細は近日公開。公式LINEで先行案内をお届け予定です",
+    ],
+    keywords: ["宮古島 星空 ツアー", "スペース稲田", "宮古島 星空フォト"],
+    seo: {
+      title: "スペース稲田 スペースシャトル星空ツアー（近日公開）｜宮古島の星空体験",
+      description:
+        "宮古島の星空を旅するスペース稲田のシグネチャー体験「スペースシャトル星空ツアー」。近日公開予定。公式LINEで先行案内をお届けします。",
+    },
+    updatedAt: "2026-06-08",
+  },
 ];
 
 /** 追加オプション（公式LINEメニューより） */
@@ -188,6 +215,11 @@ export const planOptions: PlanOption[] = [
 
 export function getPlans(): Plan[] {
   return plans;
+}
+
+/** 予約可能なプランのみ（近日公開を除外）。比較表・予約フォームの選択肢に使う。 */
+export function getBookablePlans(): Plan[] {
+  return plans.filter((p) => !p.comingSoon);
 }
 
 export function getPlan(slug: string): Plan | undefined {
@@ -224,8 +256,9 @@ export function getPickupPrice(): number {
   return planOptions.find((o) => o.name === "送迎")?.priceFrom ?? 5000;
 }
 
-/** カード等で使う価格の表示文字列（未設定なら「詳細はお問い合わせ」）。 */
+/** カード等で使う価格の表示文字列（近日公開→「近日公開」、未設定→「詳細はお問い合わせ」）。 */
 export function planPriceLabel(plan: Plan): string {
+  if (plan.comingSoon) return "近日公開";
   if (typeof plan.priceFrom !== "number") return "詳細はお問い合わせ";
   return `${formatPrice(plan.priceFrom)}${plan.priceUnit ?? ""}〜`;
 }

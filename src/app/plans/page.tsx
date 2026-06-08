@@ -62,7 +62,7 @@ export default function PlansPage() {
         各プランの料金・撮影時間・納品内容を一覧で比較できます。
       </p>
       <div className="mt-6">
-        <PlanComparison plans={plans} />
+        <PlanComparison plans={plans.filter((p) => !p.comingSoon)} />
       </div>
 
       {/* オプション */}
