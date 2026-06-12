@@ -139,15 +139,43 @@ export const proposalBookingVideo: VideoAsset = {
   label: "プロポーズ撮影の予約フォームから公式LINEへ相談する流れ",
 };
 
-/* ───────────── About（代表・活動） ───────────── */
+/* ───────────── About（代表・ストーリー・チーム） ───────────── */
 export const aboutPortrait: ImageAsset = {
-  src: "/images/about/inada-keiichi.jpg",
-  alt: "宮古島の星空フォトグラファー・代表 稲田圭市のポートレート",
+  src: "/images/about/inada-portrait.jpg",
+  alt: "宮古島の星空写真家・代表 稲田圭市のポートレート",
+  orientation: "portrait",
 };
-export const aboutActivity: ImageAsset = {
-  // src: "/images/about/activity.jpg",
-  alt: "宮古島の星空のもとで撮影する様子",
+export const aboutAccident: ImageAsset = {
+  src: "/images/about/accident-bikes.jpg",
+  alt: "17歳の頃に乗っていた原付バイク（大阪・北条公園へ向かう夜）",
 };
+export const aboutHospital: ImageAsset = {
+  src: "/images/about/hospital-bed.jpg",
+  alt: "事故で首・腰・背骨など6箇所を骨折し入院していた当時の様子",
+};
+export const aboutMilkyway: ImageAsset = {
+  src: "/images/about/miyako-milkyway.jpg",
+  alt: "宮古島で見上げた、人生で一番きれいだった満天の星空と天の川",
+  orientation: "portrait",
+};
+export const aboutShooting: ImageAsset = {
+  src: "/images/about/shooting-night.jpg",
+  alt: "三脚を立てて宮古島の星空を撮影する稲田圭市",
+};
+export const aboutBookCover: ImageAsset = {
+  src: "/images/about/book-cover.jpg",
+  alt: "稲田圭市が掲載された星空書籍『LIFE CHANGING 人生を変える星空体験』",
+};
+export const aboutBookTalk: ImageAsset = {
+  src: "/images/about/book-talk.jpg",
+  alt: "星空案内人 NOBBY池田と星空写真家 稲田圭市の対談ページ",
+};
+export const aboutBookSpread: ImageAsset = {
+  src: "/images/about/book-spread.jpg",
+  alt: "「来間島の星空への想い」を綴った書籍の見開きページ",
+};
+/** sitemap 互換のため維持（撮影シーンに統合） */
+export const aboutActivity: ImageAsset = aboutShooting;
 
 /* ───────────── ギャラリー（作品集 / 画像検索狙い） ───────────── */
 // 写真を追加するときは src を設定（alt は検索キーワードを意識して記述済み）。
